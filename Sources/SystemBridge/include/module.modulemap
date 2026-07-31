@@ -1,0 +1,4 @@
+module SystemBridge {
+    umbrella header "SystemBridge.h"
+    export *
+}
