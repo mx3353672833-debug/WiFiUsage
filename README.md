@@ -10,9 +10,6 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/mx3353672833-debug/WiFiUsage/releases/latest">
-    <img src="https://img.shields.io/github/v/release/mx3353672833-debug/WiFiUsage?display_name=tag&sort=semver" alt="最新版本">
-  </a>
   <img src="https://img.shields.io/badge/macOS-14%2B-black?logo=apple" alt="macOS 14+">
   <img src="https://img.shields.io/badge/Swift-6-F05138?logo=swift&logoColor=white" alt="Swift 6">
   <img src="https://img.shields.io/badge/Architecture-Apple%20Silicon%20%7C%20Intel-555" alt="Apple Silicon 和 Intel">
@@ -36,12 +33,19 @@
 - 支持登录时自动启动。
 - 不注册账号、不安装驱动，所有数据仅保存在本机。
 
-## 下载与安装
+## 获取源码
 
-1. 前往 [Releases](https://github.com/mx3353672833-debug/WiFiUsage/releases) 下载最新版 DMG。
-2. 打开 DMG，将 `WiFiUsage.app` 拖入“应用程序”文件夹。
-3. 从“应用程序”文件夹打开流量账本。
-4. 如果 macOS 首次阻止打开，请右键应用并选择“打开”；若仍被拦截，可前往“系统设置 → 隐私与安全”选择“仍要打开”。
+本项目目前仅发布源代码，不提供预编译的 `.app` 或 `.dmg` 安装包。
+
+- 前往 [Releases](https://github.com/mx3353672833-debug/WiFiUsage/releases) 下载对应版本的 Source code。
+- 或使用 Git 克隆仓库：
+
+```sh
+git clone https://github.com/mx3353672833-debug/WiFiUsage.git
+cd WiFiUsage
+```
+
+获取源码后，请按照下方“从源码构建”部分生成并运行应用。
 
 系统要求：
 
@@ -144,7 +148,7 @@ xcodebuild \
   build
 ```
 
-如需在自己构建的版本中长期使用 Wi‑Fi 名称权限，请在 Xcode 的 Signing & Capabilities 中选择自己的 Personal Team，或者在构建命令中传入自己的 `DEVELOPMENT_TEAM`。这不要求付费加入 Apple Developer Program。
+本仓库不包含维护者的签名配置。如需读取 Wi‑Fi 名称，请按照 Xcode 提示为本机构建选择自己的开发签名。
 
 ## 项目结构
 
