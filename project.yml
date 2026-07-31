@@ -1,0 +1,138 @@
+name: WiFiUsage
+options:
+  minimumXcodeGenVersion: 2.45.4
+  deploymentTarget:
+    macOS: "14.0"
+  groupSortPosition: top
+  generateEmptyDirectories: true
+  createIntermediateGroups: true
+
+configs:
+  Debug: debug
+  Release: release
+
+settings:
+  base:
+    MACOSX_DEPLOYMENT_TARGET: "14.0"
+    SWIFT_VERSION: "6.0"
+    CODE_SIGN_STYLE: Manual
+    CODE_SIGN_IDENTITY: "-"
+    CLANG_ENABLE_MODULES: YES
+    ENABLE_USER_SCRIPT_SANDBOXING: NO
+  configs:
+    Release:
+      CODE_SIGNING_ALLOWED: YES
+      CODE_SIGNING_REQUIRED: YES
+      CODE_SIGN_INJECT_BASE_ENTITLEMENTS: NO
+      ENABLE_HARDENED_RUNTIME: YES
+
+fileGroups:
+  - Config
+
+schemes:
+  WiFiUsage:
+    build:
+      parallelizeBuild: true
+      buildImplicitDependencies: true
+      targets:
+        WiFiUsage: all
+    run:
+      config: Debug
+      executable: WiFiUsage
+    test:
+      config: Debug
+      targets:
+        - UsageCoreTests
+    profile:
+      config: Release
+      executable: WiFiUsage
+    analyze:
+      config: Debug
+    archive:
+      config: Release
+
+
+targets:
+  WiFiUsage:
+    type: application
+    platform: macOS
+    deploymentTarget: "14.0"
+    sources:
+      - path: Sources/App
+      - path: Config/Assets.xcassets
+        buildPhase: resources
+    dependencies:
+      - target: UsageCore
+      - target: SystemBridge
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: one.xjp.WiFiUsage
+        PRODUCT_NAME: WiFiUsage
+        INFOPLIST_FILE: Config/WiFiUsage-Info.plist
+        CODE_SIGN_ENTITLEMENTS: Config/WiFiUsage.entitlements
+        GENERATE_INFOPLIST_FILE: NO
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        ENABLE_APP_SANDBOX: NO
+        SKIP_INSTALL: NO
+      configs:
+        Release:
+          CODE_SIGN_STYLE: Automatic
+          CODE_SIGN_IDENTITY: Apple Development
+
+  UsageCore:
+    type: library.static
+    platform: macOS
+    deploymentTarget: "14.0"
+    sources:
+      - path: Sources/UsageCore
+    settings:
+      base:
+        PRODUCT_NAME: UsageCore
+        PRODUCT_MODULE_NAME: UsageCore
+        DEFINES_MODULE: YES
+        APPLICATION_EXTENSION_API_ONLY: YES
+        SKIP_INSTALL: YES
+
+  SystemBridge:
+    type: library.static
+    platform: macOS
+    deploymentTarget: "14.0"
+    sources:
+      - path: Sources/SystemBridge
+        excludes:
+          - include
+      - path: Sources/SystemBridge/include
+        buildPhase: headers
+        headerVisibility: public
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: one.xjp.WiFiUsage.SystemBridge
+        PRODUCT_NAME: SystemBridge
+        PRODUCT_MODULE_NAME: SystemBridge
+        DEFINES_MODULE: YES
+        HEADER_SEARCH_PATHS:
+          - $(inherited)
+          - $(SRCROOT)/Sources/SystemBridge/include
+        PUBLIC_HEADERS_FOLDER_PATH: include/SystemBridge
+        SKIP_INSTALL: YES
+
+  UsageCoreTests:
+    type: bundle.unit-test
+    platform: macOS
+    deploymentTarget: "14.0"
+    sources:
+      - path: Tests/UsageCoreTests
+    dependencies:
+      - target: UsageCore
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: one.xjp.WiFiUsage.UsageCoreTests
+        PRODUCT_NAME: UsageCoreTests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_HOST: ""
+        BUNDLE_LOADER: ""
+        SKIP_INSTALL: YES
+    scheme:
+      testTargets:
+        - UsageCoreTests

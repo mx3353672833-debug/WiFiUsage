@@ -1,0 +1,18 @@
+# macOS Finder metadata
+.DS_Store
+
+# Xcode user state and local build output
+DerivedData/
+build/
+*.xcuserstate
+xcuserdata/
+*.moved-aside
+*.xccheckout
+*.xcscmblueprint
+
+# Generated distributables
+dist/
+*.dmg
+
+# Local tooling
+.swiftpm/
