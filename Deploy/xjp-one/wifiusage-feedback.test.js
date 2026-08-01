@@ -19,10 +19,11 @@ function responseRecorder() {
   };
 }
 
-test('validates reply contact and keeps unknown types out of the subject', () => {
-  assert.equal(validateFeedback({ message: '太短' }).error, '请至少输入 8 个字的问题描述。');
-  assert.match(validateFeedback({ message: '无法识别当前连接的无线网络', wantsReply: true }).error, /联系方式/);
-  const result = validateFeedback({ type: 'Bad\r\nBcc: x', message: '无法识别当前连接的无线网络' });
+test('requires a non-empty message and keeps unknown types out of the subject', () => {
+  assert.equal(validateFeedback({ message: '   ' }).error, '请填写问题描述。');
+  assert.equal(validateFeedback({ message: '卡' }).error, undefined);
+  assert.match(validateFeedback({ message: '卡', wantsReply: true }).error, /联系方式/);
+  const result = validateFeedback({ type: 'Bad\r\nBcc: x', message: '卡' });
   assert.equal(result.value.type, '其他问题');
 });
 

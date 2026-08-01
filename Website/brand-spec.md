@@ -28,9 +28,6 @@ Recalculate file size and SHA-256 before every deployment. Website, release note
 
 - App icon source: `../Config/Assets.xcassets/AppIcon.appiconset/AppIcon-512@2x.png`
 - Website icon copy: `assets/app-icon.png`
-- Product screenshot source: `../docs/images/overview.jpg`
-- Website screenshot copy: `assets/overview.jpg`
-- Do not redraw product UI or replace screenshot with generated imagery.
 
 ## Product capabilities
 

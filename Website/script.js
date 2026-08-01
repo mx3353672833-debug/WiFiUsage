@@ -87,6 +87,7 @@
 
   wantsReply.addEventListener('change', updateContact);
   message.addEventListener('input', () => {
+    message.setCustomValidity(message.value.trim() ? '' : '请填写问题描述。');
     count.textContent = String(message.value.length);
     markValidity(message);
   });
@@ -95,6 +96,7 @@
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
     setStatus('');
+    message.setCustomValidity(message.value.trim() ? '' : '请填写问题描述。');
     markValidity(message);
     markValidity(contact);
 

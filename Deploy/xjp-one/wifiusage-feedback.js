@@ -28,8 +28,8 @@ function validateFeedback(body = {}) {
   const contact = wantsReply ? cleanText(body.contact, 160) : '';
   const company = cleanText(body.company, 200);
 
-  if (message.length < 8) {
-    return { error: '请至少输入 8 个字的问题描述。' };
+  if (!message) {
+    return { error: '请填写问题描述。' };
   }
   if (wantsReply && contact.length < 3) {
     return { error: '希望收到回复时，请留下有效联系方式。' };

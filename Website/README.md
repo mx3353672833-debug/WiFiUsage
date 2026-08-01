@@ -19,7 +19,6 @@ Shared xjp.one navigation files are unavailable in this local server unless copi
 ## Asset sources
 
 - `assets/app-icon.png` ← `../Config/Assets.xcassets/AppIcon.appiconset/AppIcon-512@2x.png`
-- `assets/overview.jpg` ← `../docs/images/overview.jpg`
 - `downloads/WiFiUsage-1.0-free.dmg` ← `dist/WiFiUsage-1.0-public-free.dmg`
 
 `downloads/` is deployment material. The root `.gitignore` ignores all `*.dmg`, so the binary is not committed.

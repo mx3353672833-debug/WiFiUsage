@@ -431,7 +431,6 @@ p { text-wrap: pretty; }
 .story-head { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: end; margin-bottom: 94px; }
 .story-head .section-tag { grid-column: 1 / -1; margin-bottom: -40px; }
 .story-head h2,
-.product-view h2,
 .privacy h2,
 .limits h2,
 .install h2,
@@ -487,22 +486,6 @@ p { text-wrap: pretty; }
 .quota > div:last-child { display: grid; gap: 7px; }
 .quota > div:last-child strong { font-size: 15px; }
 .quota > div:last-child span { color: var(--ink-faint); font-size: 12px; }
-
-.product-view { padding: 145px 0 160px; overflow: hidden; background: var(--night); color: #f5f7f7; }
-.product-view-head { display: grid; grid-template-columns: 1fr .7fr; gap: 70px; align-items: end; margin-bottom: 70px; }
-.product-view .section-tag { color: #67d8c2; }
-.product-view-head > p { max-width: 440px; margin: 0 0 5px; color: #94a0a7; font-size: 15px; line-height: 1.75; }
-.screen-stage { position: relative; }
-.screen-backdrop { position: absolute; top: -15%; left: 50%; width: 950px; height: 450px; border-radius: 50%; background: rgba(31, 199, 165, .1); filter: blur(100px); transform: translateX(-50%); }
-.real-screen { position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,.12); border-radius: 19px; background: #0b0d10; box-shadow: 0 50px 100px rgba(0,0,0,.48); }
-.screen-bar { height: 45px; display: flex; align-items: center; gap: 7px; padding: 0 16px; border-bottom: 1px solid rgba(255,255,255,.07); background: #171a1e; }
-.screen-bar span { width: 9px; height: 9px; border-radius: 50%; background: #454a50; }
-.screen-bar b { position: absolute; left: 50%; color: #646b71; font-size: 10px; font-weight: 500; transform: translateX(-50%); }
-.screen-crop { height: min(660px, 56vw); overflow: hidden; }
-.screen-crop img { width: 100%; height: auto; display: block; }
-.real-screen figcaption { position: absolute; right: 24px; bottom: 24px; max-width: 350px; padding: 16px 18px; border: 1px solid rgba(255,255,255,.1); border-radius: 10px; background: rgba(14,17,21,.82); backdrop-filter: blur(15px); }
-.real-screen figcaption span { display: block; margin-bottom: 6px; color: #67d8c2; font: 600 10px/1 "SFMono-Regular", Menlo, monospace; }
-.real-screen figcaption p { margin: 0; color: #a4adb2; font-size: 12px; line-height: 1.55; }
 
 .privacy { position: relative; padding: 160px 0; overflow: hidden; background: #dce4e5; }
 .privacy-grid { position: relative; display: grid; grid-template-columns: .9fr 1.1fr; gap: 100px; align-items: center; }
@@ -776,7 +759,7 @@ p { text-wrap: pretty; }
   .product-label { margin-bottom: 55px; }
   .instrument-wrap { width: min(620px, 100%); margin-inline: auto; padding: 0; }
   .instrument { transform: none; }
-  .story-head, .product-view-head, .privacy-grid, .limits-grid, .install-grid { grid-template-columns: 1fr; gap: 45px; }
+  .story-head, .privacy-grid, .limits-grid, .install-grid { grid-template-columns: 1fr; gap: 45px; }
   .story-head .section-tag { margin-bottom: -18px; }
   .story-row { grid-template-columns: 120px 1fr; }
   .story-row > :last-child { grid-column: 2; }
@@ -812,15 +795,11 @@ p { text-wrap: pretty; }
   .plain-strip p:nth-child(2)::after { display: none; }
   .story { padding: 95px 0 60px; }
   .story-head { margin-bottom: 55px; }
-  .story-head h2, .product-view h2, .privacy h2, .limits h2, .install h2, .download h2 { font-size: clamp(38px, 11vw, 52px); }
+  .story-head h2, .privacy h2, .limits h2, .install h2, .download h2 { font-size: clamp(38px, 11vw, 52px); }
   .story-row { grid-template-columns: 1fr; gap: 25px; padding: 46px 0; }
   .story-row > :last-child { grid-column: auto; }
   .story-symbol { width: 78px; height: 78px; }
   .story-symbol svg { width: 40px; }
-  .product-view { padding: 95px 0 100px; }
-  .screen-crop { height: 68vw; }
-  .screen-crop img { width: 130%; height: auto; max-width: none; transform: translateX(-14%); }
-  .real-screen figcaption { position: static; max-width: none; border: 0; border-top: 1px solid rgba(255,255,255,.08); border-radius: 0; background: #101419; }
   .privacy { padding: 105px 0; }
   .privacy-word { top: -20px; right: -16px; font-size: 170px; }
   .limits { padding: 95px 0; }
