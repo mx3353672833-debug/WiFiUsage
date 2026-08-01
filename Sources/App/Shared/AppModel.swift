@@ -129,12 +129,14 @@ public final class AppModel {
     @ObservationIgnored private var refreshTask: Task<Void, Never>?
     @ObservationIgnored private var networkMonitorTask: Task<Void, Never>?
     @ObservationIgnored private var refreshGeneration: UInt64 = 0
+    @ObservationIgnored private var wifiStatusGeneration: UInt64 = 0
     @ObservationIgnored private var applicationDataRevision: UInt64 = 0
     @ObservationIgnored private var pendingApplicationUsage: [String: PendingApplicationUsage] = [:]
     @ObservationIgnored private var applicationMetadata: [String: ApplicationMetadata] = [:]
-    @ObservationIgnored private let networkResolver = WiFiNetworkResolver()
-    @ObservationIgnored private let launchAtLoginManager = LaunchAtLoginManager()
-    @ObservationIgnored private let preferences = UserDefaults.standard
+    @ObservationIgnored private let runtimeConfiguration: AppRuntimeConfiguration
+    @ObservationIgnored private let networkResolver: any WiFiNetworkResolving
+    @ObservationIgnored private let launchAtLoginManager: any LaunchAtLoginManaging
+    @ObservationIgnored private let preferences: UserDefaults
     @ObservationIgnored private var registeredCurrentNetworkID: String?
     @ObservationIgnored private var didInitializeNetworkSelection = false
     @ObservationIgnored private var lastIdentifiedCurrentNetworkID: String?
@@ -165,13 +167,34 @@ public final class AppModel {
         let cost: UsageCostBreakdown
     }
 
-    public init() {
-        networkResolver.onWiFiNameAccessStateChange = { [weak self] state in
-            self?.wifiNameAccessState = state
-            self?.refreshWiFiStatus()
+    public init(
+        runtimeConfiguration: AppRuntimeConfiguration = .current,
+        networkResolver: (any WiFiNetworkResolving)? = nil,
+        launchAtLoginManager: any LaunchAtLoginManaging = LaunchAtLoginManager(),
+        preferences: UserDefaults = .standard,
+        automaticallyBootstraps: Bool = true
+    ) {
+        self.runtimeConfiguration = runtimeConfiguration
+        self.networkResolver = networkResolver
+            ?? WiFiNetworkResolver(runtimeConfiguration: runtimeConfiguration)
+        self.launchAtLoginManager = launchAtLoginManager
+        self.preferences = preferences
+        wifiNameAccessState = runtimeConfiguration.allowsLocationSSIDAccess
+            ? self.networkResolver.wifiNameAccessState
+            : .notRequired
+        self.networkResolver.onWiFiNameAccessStateChange = { [weak self] state in
+            guard let self else { return }
+            self.wifiNameAccessState = self.runtimeConfiguration.allowsLocationSSIDAccess
+                ? state
+                : .notRequired
+            Task { [weak self] in
+                await self?.refreshWiFiStatus()
+            }
         }
-        Task { [weak self] in
-            await self?.bootstrap()
+        if automaticallyBootstraps {
+            Task { [weak self] in
+                await self?.bootstrap()
+            }
         }
     }
 
@@ -192,6 +215,14 @@ public final class AppModel {
     public var currentNetworkKey: String? {
         guard currentSSID != nil else { return nil }
         return currentWiFiNetwork?.networkID
+    }
+
+    public var allowsLocationSSIDAccess: Bool {
+        runtimeConfiguration.allowsLocationSSIDAccess
+    }
+
+    public var isPublicDistribution: Bool {
+        runtimeConfiguration.isPublicDistribution
     }
 
     public var visiblePhysicalSamples: [PhysicalUsageSample] {
@@ -483,16 +514,21 @@ public final class AppModel {
             ).first ?? FileManager.default.homeDirectoryForCurrentUser
                 .appendingPathComponent("Library/Application Support", isDirectory: true)
             let databaseURL = applicationSupport
-                .appendingPathComponent("WiFiUsage", isDirectory: true)
+                .appendingPathComponent(
+                    runtimeConfiguration.applicationSupportDirectory,
+                    isDirectory: true
+                )
                 .appendingPathComponent(Self.databaseFileName, isDirectory: false)
             let repository = try SQLiteUsageRepository(url: databaseURL)
             self.repository = repository
             repositoryReady = true
-            await importLegacyDatabaseIfPresent(using: repository)
+            if runtimeConfiguration.allowsLegacyDatabaseImport {
+                await importLegacyDatabaseIfPresent(using: repository)
+            }
             try? await repository.deleteSamples(
                 endingBefore: Calendar.current.date(byAdding: .day, value: -400, to: Date()) ?? .distantPast
             )
-            refreshWiFiStatus()
+            await refreshWiFiStatus()
             startWiFiMonitoring()
             await refresh()
             await startSampling()
@@ -574,12 +610,16 @@ public final class AppModel {
     }
 
     public func requestSSIDAccess() {
+        guard runtimeConfiguration.allowsLocationSSIDAccess else { return }
         NSApp.activate(ignoringOtherApps: true)
         networkResolver.requestSSIDAuthorization()
-        refreshWiFiStatus()
+        Task { [weak self] in
+            await self?.refreshWiFiStatus()
+        }
     }
 
     public func openWiFiNameSettings() {
+        guard runtimeConfiguration.allowsLocationSSIDAccess else { return }
         guard let url = URL(
             string: "x-apple.systempreferences:com.apple.preference.security?Privacy_LocationServices"
         ) else { return }
@@ -594,7 +634,9 @@ public final class AppModel {
         }
         guard let network = networkOptions.first(where: { $0.key == networkID }),
               network.isIdentified else {
-            errorMessage = "请先允许识别 Wi-Fi 名称，再设置套餐。"
+            errorMessage = runtimeConfiguration.isPublicDistribution
+                ? "连接 Wi-Fi 并等待自动识别后，再设置套餐。"
+                : "请先允许识别 Wi-Fi 名称，再设置套餐。"
             return false
         }
         if let planID, !plans.contains(where: { $0.id == planID }) {
@@ -745,6 +787,10 @@ public final class AppModel {
     public func prepareForTermination() async {
         applicationFlushTask?.cancel()
         preciseModeTask?.cancel()
+        networkMonitorTask?.cancel()
+        await sampler?.stop()
+        sampler = nil
+        isSampling = false
         await applicationSampler?.stop()
         applicationSampler = nil
         await flushPendingApplicationUsage()
@@ -782,18 +828,22 @@ public final class AppModel {
         NSWorkspace.shared.open(URL(fileURLWithPath: "/Applications", isDirectory: true))
     }
 
-    public func refreshWiFiStatus() {
+    public func refreshWiFiStatus() async {
+        wifiStatusGeneration &+= 1
+        let generation = wifiStatusGeneration
+        let resolvedNetwork = await networkResolver.currentNetwork()
+        guard !Task.isCancelled, generation == wifiStatusGeneration else { return }
+
         let previousNetwork = currentWiFiNetwork
         let previouslyIdentifiedCurrentID = lastIdentifiedCurrentNetworkID
-        let resolvedNetwork = networkResolver.currentNetwork()
-
-        wifiNameAccessState = networkResolver.wifiNameAccessState
+        wifiNameAccessState = runtimeConfiguration.allowsLocationSSIDAccess
+            ? networkResolver.wifiNameAccessState
+            : .notRequired
         currentWiFiNetwork = resolvedNetwork
 
         if previousNetwork != resolvedNetwork {
-            Task { [weak self] in
-                await self?.sampler?.resetBaseline()
-            }
+            await sampler?.resetBaseline()
+            guard !Task.isCancelled, generation == wifiStatusGeneration else { return }
         }
 
         if let resolvedNetwork,
@@ -826,16 +876,12 @@ public final class AppModel {
         guard let repository else { return }
         guard registeredCurrentNetworkID != observedNetwork.id else { return }
         registeredCurrentNetworkID = observedNetwork.id
-        Task { [weak self] in
-            do {
-                try await repository.save(wifiNetwork: observedNetwork)
-            } catch {
-                NSLog("WiFiUsage could not save the current Wi-Fi: %@", error.localizedDescription)
-                await MainActor.run {
-                    if self?.registeredCurrentNetworkID == observedNetwork.id {
-                        self?.registeredCurrentNetworkID = nil
-                    }
-                }
+        do {
+            try await repository.save(wifiNetwork: observedNetwork)
+        } catch {
+            NSLog("WiFiUsage could not save the current Wi-Fi: %@", error.localizedDescription)
+            if registeredCurrentNetworkID == observedNetwork.id {
+                registeredCurrentNetworkID = nil
             }
         }
     }
@@ -849,7 +895,8 @@ public final class AppModel {
                 } catch {
                     return
                 }
-                self?.refreshWiFiStatus()
+                guard let self else { return }
+                await self.refreshWiFiStatus()
             }
         }
     }

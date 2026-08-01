@@ -18,15 +18,16 @@ public actor PhysicalWiFiSampler {
     }
 
     private let counterProvider: any InterfaceCounterProviding
-    private let networkResolver: WiFiNetworkResolver
+    private let networkResolver: any WiFiNetworkResolving
     private let samplingInterval: Duration
     private let sampleHandler: SampleHandler
     private var baseline: Baseline?
     private var samplingTask: Task<Void, Never>?
+    private var isStopping = false
 
     public init(
         counterProvider: any InterfaceCounterProviding = SystemInterfaceCounterProvider(),
-        networkResolver: WiFiNetworkResolver,
+        networkResolver: any WiFiNetworkResolving,
         samplingInterval: Duration = .seconds(1),
         sampleHandler: @escaping SampleHandler
     ) throws {
@@ -40,7 +41,7 @@ public actor PhysicalWiFiSampler {
     }
 
     public func start() {
-        guard samplingTask == nil else { return }
+        guard samplingTask == nil, !isStopping else { return }
         samplingTask = Task { [weak self] in
             guard let self else { return }
             while !Task.isCancelled {
@@ -58,8 +59,13 @@ public actor PhysicalWiFiSampler {
         }
     }
 
-    public func stop() {
-        samplingTask?.cancel()
+    public func stop() async {
+        guard !isStopping else { return }
+        isStopping = true
+        defer { isStopping = false }
+        let task = samplingTask
+        task?.cancel()
+        await task?.value
         samplingTask = nil
         baseline = nil
     }
@@ -70,7 +76,7 @@ public actor PhysicalWiFiSampler {
 
     @discardableResult
     public func sampleOnce(at observedAt: Date = Date()) async throws -> PhysicalUsageSample? {
-        guard let network = networkResolver.currentNetwork(),
+        guard let network = await networkResolver.currentNetwork(),
               network.interfaceIndex != 0,
               !Self.isVirtualInterface(network.interfaceName) else {
             baseline = nil

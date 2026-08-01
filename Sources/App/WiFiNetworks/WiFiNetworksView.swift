@@ -62,7 +62,7 @@ struct WiFiNetworksView: View {
 
                     if network.isIdentified {
                         planMenu(for: network)
-                    } else if network.isCurrent {
+                    } else if network.isCurrent && model.allowsLocationSSIDAccess {
                         Button("识别名称") {
                             openWiFiNameAccess()
                         }
@@ -102,29 +102,61 @@ struct WiFiNetworksView: View {
 
     @ViewBuilder
     private var wifiNameAccessBanner: some View {
-        switch model.wifiNameAccessState {
-        case .authorized:
-            EmptyView()
-        case .notDetermined:
-            accessBanner(
-                symbol: "wifi.exclamationmark",
-                message: "允许识别 Wi-Fi 名称后，才能分别绑定套餐。"
-            ) {
-                model.requestSSIDAccess()
+        if let ssid = model.currentSSID {
+            statusBanner(
+                symbol: "checkmark.circle.fill",
+                message: "已识别 · \(ssid)",
+                color: .usageDownload
+            )
+        } else if !model.allowsLocationSSIDAccess || model.wifiNameAccessState == .notRequired {
+            statusBanner(
+                symbol: "wifi",
+                message: "正在自动识别 Wi-Fi 名称，无需定位权限。",
+                color: .usageDownload
+            )
+        } else {
+            switch model.wifiNameAccessState {
+            case .authorized:
+                statusBanner(
+                    symbol: "wifi",
+                    message: "正在自动识别当前 Wi-Fi 名称。",
+                    color: .usageDownload
+                )
+            case .notDetermined:
+                accessBanner(
+                    symbol: "wifi.exclamationmark",
+                    message: "允许识别 Wi-Fi 名称后，才能分别绑定套餐。"
+                ) {
+                    model.requestSSIDAccess()
+                }
+            case .locationServicesDisabled:
+                accessBanner(
+                    symbol: "location.slash.fill",
+                    message: "定位服务已关闭，Wi-Fi 总用量仍会继续记录。"
+                ) {
+                    model.openWiFiNameSettings()
+                }
+            case .restricted, .denied:
+                accessBanner(
+                    symbol: "wifi.exclamationmark",
+                    message: "Wi-Fi 名称访问未开启，总用量仍会继续记录。"
+                ) {
+                    model.openWiFiNameSettings()
+                }
+            case .notRequired:
+                EmptyView()
             }
-        case .locationServicesDisabled:
-            accessBanner(
-                symbol: "location.slash.fill",
-                message: "定位服务已关闭，Wi-Fi 总用量仍会继续记录。"
-            ) {
-                model.openWiFiNameSettings()
-            }
-        case .restricted, .denied:
-            accessBanner(
-                symbol: "wifi.exclamationmark",
-                message: "Wi-Fi 名称访问未开启，总用量仍会继续记录。"
-            ) {
-                model.openWiFiNameSettings()
+        }
+    }
+
+    private func statusBanner(symbol: String, message: String, color: Color) -> some View {
+        GraphiteCard {
+            HStack(spacing: 12) {
+                Image(systemName: symbol)
+                    .foregroundStyle(color)
+                Text(message)
+                    .font(.callout)
+                Spacer()
             }
         }
     }
@@ -153,6 +185,7 @@ struct WiFiNetworksView: View {
     }
 
     private func openWiFiNameAccess() {
+        guard model.allowsLocationSSIDAccess else { return }
         if model.wifiNameAccessState == .notDetermined {
             model.requestSSIDAccess()
         } else {
@@ -171,7 +204,12 @@ struct WiFiNetworksView: View {
                 .font(.caption)
                 .foregroundStyle(Color.orange)
         } else if network.isCurrent {
-            Label("允许识别名称后可绑定套餐", systemImage: "wifi.exclamationmark")
+            Label(
+                model.allowsLocationSSIDAccess
+                    ? "允许识别名称后可绑定套餐"
+                    : "正在自动识别，连接 Wi-Fi 后可绑定",
+                systemImage: "wifi.exclamationmark"
+            )
                 .font(.caption)
                 .foregroundStyle(.secondary)
         } else {

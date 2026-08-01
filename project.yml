@@ -10,6 +10,8 @@ options:
 configs:
   Debug: debug
   Release: release
+  PublicTest: release
+  PublicRelease: release
 
 settings:
   base:
@@ -24,6 +26,20 @@ settings:
       CODE_SIGNING_ALLOWED: YES
       CODE_SIGNING_REQUIRED: YES
       CODE_SIGN_INJECT_BASE_ENTITLEMENTS: NO
+      ENABLE_HARDENED_RUNTIME: YES
+    PublicTest:
+      CODE_SIGNING_ALLOWED: NO
+      CODE_SIGNING_REQUIRED: NO
+      CODE_SIGN_IDENTITY: ""
+      CODE_SIGN_INJECT_BASE_ENTITLEMENTS: NO
+      DEVELOPMENT_TEAM: ""
+      ENABLE_HARDENED_RUNTIME: YES
+    PublicRelease:
+      CODE_SIGNING_ALLOWED: NO
+      CODE_SIGNING_REQUIRED: NO
+      CODE_SIGN_IDENTITY: ""
+      CODE_SIGN_INJECT_BASE_ENTITLEMENTS: NO
+      DEVELOPMENT_TEAM: ""
       ENABLE_HARDENED_RUNTIME: YES
 
 fileGroups:
@@ -43,6 +59,7 @@ schemes:
       config: Debug
       targets:
         - UsageCoreTests
+        - AppTests
     profile:
       config: Release
       executable: WiFiUsage
@@ -50,6 +67,48 @@ schemes:
       config: Debug
     archive:
       config: Release
+  PublicTest:
+    build:
+      parallelizeBuild: true
+      buildImplicitDependencies: true
+      targets:
+        WiFiUsage: all
+    run:
+      config: PublicTest
+      executable: WiFiUsage
+    test:
+      config: PublicTest
+      targets:
+        - UsageCoreTests
+        - AppTests
+    profile:
+      config: PublicTest
+      executable: WiFiUsage
+    analyze:
+      config: PublicTest
+    archive:
+      config: PublicTest
+  PublicRelease:
+    build:
+      parallelizeBuild: true
+      buildImplicitDependencies: true
+      targets:
+        WiFiUsage: all
+    run:
+      config: PublicRelease
+      executable: WiFiUsage
+    test:
+      config: PublicRelease
+      targets:
+        - UsageCoreTests
+        - AppTests
+    profile:
+      config: PublicRelease
+      executable: WiFiUsage
+    analyze:
+      config: PublicRelease
+    archive:
+      config: PublicRelease
 
 
 targets:
@@ -68,17 +127,44 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: one.xjp.WiFiUsage
         PRODUCT_NAME: WiFiUsage
-        INFOPLIST_FILE: Config/WiFiUsage-Info.plist
+        INFOPLIST_FILE: Config/WiFiUsage-Personal-Info.plist
         CODE_SIGN_ENTITLEMENTS: Config/WiFiUsage.entitlements
         GENERATE_INFOPLIST_FILE: NO
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
         ENABLE_APP_SANDBOX: NO
+        ENABLE_TESTABILITY: YES
         SKIP_INSTALL: NO
       configs:
         Release:
           CODE_SIGN_STYLE: Automatic
           CODE_SIGN_IDENTITY: Apple Development
+        PublicTest:
+          PRODUCT_BUNDLE_IDENTIFIER: one.xjp.WiFiUsage.PublicTest
+          PRODUCT_NAME: WiFiUsage
+          INFOPLIST_FILE: Config/WiFiUsage-Public-Info.plist
+          CODE_SIGN_ENTITLEMENTS: ""
+          CODE_SIGNING_ALLOWED: NO
+          CODE_SIGNING_REQUIRED: NO
+          CODE_SIGN_IDENTITY: ""
+          DEVELOPMENT_TEAM: ""
+          WU_BUNDLE_DISPLAY_NAME: 流量账本 Public Test
+          WU_DISTRIBUTION_VARIANT: PublicTest
+          WU_APPLICATION_SUPPORT_DIRECTORY: WiFiUsage-PublicTest
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: $(inherited) WU_PUBLIC_TEST
+        PublicRelease:
+          PRODUCT_BUNDLE_IDENTIFIER: one.xjp.WiFiUsage
+          PRODUCT_NAME: WiFiUsage
+          INFOPLIST_FILE: Config/WiFiUsage-Public-Info.plist
+          CODE_SIGN_ENTITLEMENTS: ""
+          CODE_SIGNING_ALLOWED: NO
+          CODE_SIGNING_REQUIRED: NO
+          CODE_SIGN_IDENTITY: ""
+          DEVELOPMENT_TEAM: ""
+          WU_BUNDLE_DISPLAY_NAME: 流量账本
+          WU_DISTRIBUTION_VARIANT: PublicRelease
+          WU_APPLICATION_SUPPORT_DIRECTORY: WiFiUsage
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: $(inherited) WU_PUBLIC_RELEASE
 
   UsageCore:
     type: library.static
@@ -92,6 +178,7 @@ targets:
         PRODUCT_MODULE_NAME: UsageCore
         DEFINES_MODULE: YES
         APPLICATION_EXTENSION_API_ONLY: YES
+        ENABLE_TESTABILITY: YES
         SKIP_INSTALL: YES
 
   SystemBridge:
@@ -116,6 +203,26 @@ targets:
           - $(SRCROOT)/Sources/SystemBridge/include
         PUBLIC_HEADERS_FOLDER_PATH: include/SystemBridge
         SKIP_INSTALL: YES
+
+
+  AppTests:
+    type: bundle.unit-test
+    platform: macOS
+    deploymentTarget: "14.0"
+    sources:
+      - path: Tests/AppTests
+    dependencies:
+      - target: WiFiUsage
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: one.xjp.WiFiUsage.AppTests
+        PRODUCT_NAME: AppTests
+        GENERATE_INFOPLIST_FILE: YES
+        ENABLE_TESTABILITY: YES
+        SKIP_INSTALL: YES
+    scheme:
+      testTargets:
+        - AppTests
 
   UsageCoreTests:
     type: bundle.unit-test

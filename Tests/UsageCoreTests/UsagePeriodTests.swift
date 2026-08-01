@@ -46,7 +46,8 @@ final class UsagePeriodTests: XCTestCase {
     }
 
     func testRejectsInvalidRangesAndCycleDays() {
-        XCTAssertThrowsError(try UsagePeriod.custom(start: Date(), end: Date()).dateInterval())
+        let sameDate = Date()
+        XCTAssertThrowsError(try UsagePeriod.custom(start: sameDate, end: sameDate).dateInterval())
         XCTAssertThrowsError(try UsagePeriod.billingCycle(containing: Date(), startDay: 0).dateInterval())
         XCTAssertThrowsError(try UsagePeriod.billingCycle(containing: Date(), startDay: 32).dateInterval())
     }

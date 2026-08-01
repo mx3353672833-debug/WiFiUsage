@@ -24,23 +24,21 @@ struct SettingsView: View {
                         }
                         LabeledContent("Wi-Fi 名称") {
                             Label(wifiNameAccessText, systemImage: wifiNameAccessSymbol)
-                                .foregroundStyle(
-                                    model.wifiNameAccessState == .authorized
-                                        ? Color.usageDownload
-                                        : Color.orange
-                                )
+                                .foregroundStyle(wifiNameAccessColor)
                         }
-                        switch model.wifiNameAccessState {
-                        case .notDetermined:
-                            Button("允许识别 Wi-Fi 名称") {
-                                model.requestSSIDAccess()
+                        if model.allowsLocationSSIDAccess && model.currentSSID == nil {
+                            switch model.wifiNameAccessState {
+                            case .notDetermined:
+                                Button("允许识别 Wi-Fi 名称") {
+                                    model.requestSSIDAccess()
+                                }
+                            case .locationServicesDisabled, .restricted, .denied:
+                                Button("打开系统设置") {
+                                    model.openWiFiNameSettings()
+                                }
+                            case .notRequired, .authorized:
+                                EmptyView()
                             }
-                        case .locationServicesDisabled, .restricted, .denied:
-                            Button("打开系统设置") {
-                                model.openWiFiNameSettings()
-                            }
-                        case .authorized:
-                            EmptyView()
                         }
                     }
                 }
@@ -205,20 +203,42 @@ struct SettingsView: View {
     }
 
     private var wifiNameAccessText: String {
+        if let ssid = model.currentSSID {
+            return "已识别 · \(ssid)"
+        }
+        if !model.allowsLocationSSIDAccess || model.wifiNameAccessState == .notRequired {
+            return model.currentWiFiNetwork == nil
+                ? "连接 Wi-Fi 后自动识别"
+                : "正在自动识别 Wi-Fi 名称"
+        }
         switch model.wifiNameAccessState {
-        case .locationServicesDisabled: "定位服务已关闭"
-        case .notDetermined: "尚未允许"
-        case .restricted: "当前设置不允许"
-        case .denied: "未允许"
-        case .authorized:
-            model.currentSSID.map { "已允许 · \($0)" } ?? "已允许"
+        case .locationServicesDisabled: return "定位服务已关闭"
+        case .notDetermined: return "尚未允许"
+        case .restricted: return "当前设置不允许"
+        case .denied: return "未允许"
+        case .authorized: return "正在自动识别"
+        case .notRequired: return "自动识别，无需定位权限"
         }
     }
 
     private var wifiNameAccessSymbol: String {
-        model.wifiNameAccessState == .authorized
-            ? "checkmark.circle.fill"
-            : "exclamationmark.triangle.fill"
+        if model.currentSSID != nil {
+            return "checkmark.circle.fill"
+        }
+        if !model.allowsLocationSSIDAccess || model.wifiNameAccessState == .notRequired {
+            return model.currentWiFiNetwork == nil ? "wifi.slash" : "clock.arrow.circlepath"
+        }
+        return "exclamationmark.triangle.fill"
+    }
+
+    private var wifiNameAccessColor: Color {
+        if model.currentSSID != nil {
+            return .usageDownload
+        }
+        if !model.allowsLocationSSIDAccess || model.wifiNameAccessState == .notRequired {
+            return .secondary
+        }
+        return .orange
     }
 
     private var applicationSamplingStatusText: String {

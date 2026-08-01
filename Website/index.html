@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f6f7">
+  <meta name="description" content="流量账本是一款本地运行的 macOS Wi‑Fi 流量统计工具。按 Wi‑Fi 记录上下行总量，估算应用用量与套餐费用。">
+  <link rel="canonical" href="https://xjp.one/wifiusage/">
+  <link rel="icon" type="image/png" href="/wifiusage/assets/app-icon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:title" content="流量账本 · WiFiUsage">
+  <meta property="og:description" content="把 Wi‑Fi 流量，记成一本账。免费、本地优先的 macOS 流量统计工具。">
+  <meta property="og:url" content="https://xjp.one/wifiusage/">
+  <meta property="og:image" content="https://xjp.one/wifiusage/assets/overview.jpg">
+  <title>流量账本 · WiFiUsage — macOS Wi‑Fi 流量统计</title>
+  <link rel="stylesheet" href="/site-nav.css">
+  <link rel="stylesheet" href="/wifiusage/styles.css">
+  <script>document.documentElement.classList.add('has-js');</script>
+  <script defer src="/site-nav.js"></script>
+  <script defer src="/wifiusage/script.js"></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "流量账本",
+    "alternateName": "WiFiUsage",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "macOS 14 or later",
+    "softwareVersion": "1.0",
+    "isAccessibleForFree": true,
+    "downloadUrl": "https://xjp.one/wifiusage/downloads/WiFiUsage-1.0-free.dmg",
+    "url": "https://xjp.one/wifiusage/",
+    "image": "https://xjp.one/wifiusage/assets/app-icon.png",
+    "description": "本地优先的 macOS Wi-Fi 流量统计工具，按网络记录物理流量并估算应用用量与套餐费用。"
+  }
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+
+  <div class="scroll-signal" aria-hidden="true">
+    <span class="scroll-signal-download"></span>
+    <span class="scroll-signal-upload"></span>
+  </div>
+
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-grid shell">
+        <div class="hero-copy">
+          <div class="product-label enter">
+            <img src="/wifiusage/assets/app-icon.png" width="48" height="48" alt="流量账本应用图标">
+            <div>
+              <strong>流量账本</strong>
+              <span>WiFiUsage for macOS</span>
+            </div>
+          </div>
+
+          <p class="overline enter delay-1">你的 Wi‑Fi，用到哪里去了？</p>
+          <h1 id="hero-title" class="enter delay-1">把 Wi‑Fi 流量，<br><em>记成一本账。</em></h1>
+          <p class="hero-intro enter delay-2">分别记录每个 Wi‑Fi 的下载、上传和套餐费用。应用用量在本机估算，所有记录只留在你的 Mac。</p>
+
+          <div class="hero-actions enter delay-3">
+            <a class="button button-dark" href="/wifiusage/downloads/WiFiUsage-1.0-free.dmg" download>下载免费版</a>
+            <a class="text-link github-link" href="https://github.com/mx3353672833-debug/WiFiUsage" target="_blank" rel="noopener noreferrer">去 GitHub 点个 Star</a>
+          </div>
+
+          <div class="compat enter delay-3" aria-label="系统要求与产品信息">
+            <span>macOS 14+</span>
+            <span>Apple Silicon + Intel</span>
+            <span>免费</span>
+          </div>
+        </div>
+
+        <div class="instrument-wrap enter delay-2" aria-label="流量账本数据仪表示意">
+          <div class="instrument-shadow" aria-hidden="true"></div>
+          <div class="instrument">
+            <div class="instrument-head">
+              <div class="traffic-lights" aria-hidden="true"><i></i><i></i><i></i></div>
+              <span>Wi‑Fi 使用情况</span>
+              <span class="recording"><i></i> 正在记录</span>
+            </div>
+
+            <div class="network-row">
+              <div>
+                <span class="micro-label">当前网络</span>
+                <strong>Home Wi‑Fi</strong>
+              </div>
+              <svg class="wifi-mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M4 12a18 18 0 0 1 24 0M9 18a10.5 10.5 0 0 1 14 0M14 24a3 3 0 0 1 4 0"/></svg>
+            </div>
+
+            <div class="dial-stage">
+              <svg class="dial" viewBox="0 0 320 320" aria-hidden="true">
+                <circle class="dial-track outer" cx="160" cy="160" r="136"/>
+                <circle class="dial-track inner" cx="160" cy="160" r="105"/>
+                <circle class="dial-download" cx="160" cy="160" r="136"/>
+                <circle class="dial-upload" cx="160" cy="160" r="105"/>
+                <g class="dial-ticks">
+                  <path d="M160 10v8M235 30l-4 7M290 85l-7 4M310 160h-8M290 235l-7-4M235 290l-4-7M160 310v-8M85 290l4-7M30 235l7-4M10 160h8M30 85l7 4M85 30l4 7"/>
+                </g>
+              </svg>
+              <div class="dial-center">
+                <span>今日累计</span>
+                <strong>2.19</strong>
+                <small>GB</small>
+              </div>
+              <span class="packet packet-a" aria-hidden="true"></span>
+              <span class="packet packet-b" aria-hidden="true"></span>
+            </div>
+
+            <div class="meter-row">
+              <div class="meter download-meter">
+                <span><i></i>下载</span>
+                <strong>1.38 <small>GB</small></strong>
+                <div class="spark-bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+              </div>
+              <div class="meter upload-meter">
+                <span><i></i>上传</span>
+                <strong>810.7 <small>MB</small></strong>
+                <div class="spark-bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+              </div>
+            </div>
+            <p class="demo-note">界面动效示意 · 数据取自实际运行截图</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="signal-ribbon" aria-hidden="true">
+        <div class="signal-line line-green"></div>
+        <div class="signal-line line-purple"></div>
+      </div>
+    </section>
+
+    <section class="plain-strip" aria-label="产品原则">
+      <div class="shell plain-strip-inner reveal">
+        <p>不注册账号</p>
+        <p>不上传流量</p>
+        <p>不安装驱动</p>
+        <p>不收集遥测</p>
+      </div>
+    </section>
+
+    <section class="story" id="details" aria-labelledby="story-title">
+      <div class="shell story-head reveal">
+        <p class="section-tag">记录什么</p>
+        <h2 id="story-title">从“用了多少”，<br>到“是谁在用”。</h2>
+        <p>总量与应用分开统计。该精确的地方按网卡计数，该说明边界的地方不含糊。</p>
+      </div>
+
+      <div class="shell story-rows">
+        <article class="story-row reveal">
+          <div class="story-symbol wifi-symbol" aria-hidden="true">
+            <svg viewBox="0 0 64 64"><path d="M9 25a34 34 0 0 1 46 0M18 35a21 21 0 0 1 28 0M27 45a8 8 0 0 1 10 0M32 53h.01"/></svg>
+          </div>
+          <div class="story-copy">
+            <span>按网络</span>
+            <h3>每个 Wi‑Fi，各有一本账。</h3>
+            <p>自动识别当前网络，切换后独立记录。今天、24 小时、7 天、本月、今年，随时回看。</p>
+          </div>
+          <div class="network-ledger" aria-label="按 Wi-Fi 分组示意">
+            <div><i></i><span>Home Wi‑Fi</span><b>本月</b></div>
+            <div><i></i><span>Phone Hotspot</span><b>7 天</b></div>
+            <div><i></i><span>Office</span><b>今天</b></div>
+          </div>
+        </article>
+
+        <article class="story-row reverse reveal">
+          <div class="story-symbol app-symbol" aria-hidden="true">
+            <span></span><span></span><span></span><span></span>
+          </div>
+          <div class="story-copy">
+            <span>按应用</span>
+            <h3>看看流量，被谁带走了。</h3>
+            <p>使用 macOS 自带的 <code>nettop</code> 在本机估算应用用量。低耗能适合全天运行，精细模式临时捕捉更多短连接。</p>
+          </div>
+          <div class="app-flow" aria-label="应用流量排行示意">
+            <div><span>浏览器</span><i style="--fill: 84%"></i></div>
+            <div><span>视频</span><i style="--fill: 58%"></i></div>
+            <div><span>其他</span><i style="--fill: 31%"></i></div>
+            <small>应用数据为本机近似估算</small>
+          </div>
+        </article>
+
+        <article class="story-row reveal">
+          <div class="story-symbol plan-symbol" aria-hidden="true">
+            <svg viewBox="0 0 64 64"><path d="M10 17h44v34H10zM10 25h44M18 38h14"/></svg>
+          </div>
+          <div class="story-copy">
+            <span>按套餐</span>
+            <h3>流量有价，超额有数。</h3>
+            <p>给 Wi‑Fi 绑定套餐，设置额度、基础费用和超额单价。费用以物理网卡总量估算。</p>
+          </div>
+          <div class="quota" aria-label="套餐额度示意">
+            <div class="quota-ring"><span>67<small>%</small></span></div>
+            <div><strong>套餐额度</strong><span>按上下行分别计算</span></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="product-view" aria-labelledby="product-view-title">
+      <div class="shell product-view-head reveal">
+        <div>
+          <p class="section-tag">真实界面</p>
+          <h2 id="product-view-title">打开就能看懂，<br>流量去了哪里。</h2>
+        </div>
+        <p>这是流量账本真实运行界面。当前 Wi‑Fi、上下行总量、趋势和套餐费用集中在一页，不需要先学习一套新术语。</p>
+      </div>
+
+      <div class="shell screen-stage reveal">
+        <div class="screen-backdrop" aria-hidden="true"></div>
+        <figure class="real-screen">
+          <div class="screen-bar" aria-hidden="true"><span></span><span></span><span></span><b>流量账本 · 概览</b></div>
+          <div class="screen-crop">
+            <img src="/wifiusage/assets/overview.jpg" width="1920" height="1200" loading="lazy" alt="流量账本概览页面，显示当前 Wi-Fi 的下载、上传、累计流量、趋势和套餐费用">
+          </div>
+          <figcaption><span>REAL APP</span><p>真实 App 截图。数据仅用于展示界面结构，统计结果保存在本机。</p></figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="privacy" aria-labelledby="privacy-title">
+      <div class="shell privacy-grid reveal">
+        <div class="privacy-word" aria-hidden="true" role="presentation">本机</div>
+        <div class="privacy-copy">
+          <p class="section-tag">数据归你</p>
+          <h2 id="privacy-title">流量记录不出这台 Mac。</h2>
+          <p class="privacy-lead">没有账号、云端或遥测。应用只在本机读取系统计数，并把数据写入本地 SQLite。</p>
+          <ul>
+            <li><span>01</span><div><strong>无需管理员权限</strong><p>不安装驱动、Network Extension 或 System Extension。</p></div></li>
+            <li><span>02</span><div><strong>公共版不申请定位权限</strong><p>只读取本机网络摘要识别当前 Wi‑Fi，不读取、保存或上传地理位置。</p></div></li>
+            <li><span>03</span><div><strong>数据库由你保管</strong><code>~/Library/Application Support/WiFiUsage/usage.sqlite</code></div></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="limits" aria-labelledby="limits-title">
+      <div class="shell limits-grid reveal">
+        <div>
+          <p class="section-tag">说清边界</p>
+          <h2 id="limits-title">统计工具，<br>不是运营商账单。</h2>
+        </div>
+        <div class="limits-copy">
+          <p>Wi‑Fi 总量来自物理网卡累计计数。应用用量来自本机进程快照差分，只适合观察趋势和费用占比。</p>
+          <div class="limit-list">
+            <span>只记录应用运行期间的流量</span>
+            <span>短连接可能少量遗漏</span>
+            <span>VPN、代理可能无法完整归属</span>
+            <span>费用估算不代替审计</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="install" aria-labelledby="install-title">
+      <div class="shell install-grid reveal">
+        <div class="install-title">
+          <p class="section-tag">安装</p>
+          <h2 id="install-title">拖进去，<br>然后打开。</h2>
+          <p>当前版本尚未经过 Apple 公证，首次打开多一步。</p>
+        </div>
+        <ol class="install-steps">
+          <li><span>1</span><div><strong>打开 DMG</strong><p>下载约 2.1 MB 的安装镜像。</p></div></li>
+          <li><span>2</span><div><strong>拖入应用程序</strong><p>把 WiFiUsage.app 拖到 Applications。</p></div></li>
+          <li><span>3</span><div><strong>首次右键打开</strong><p>此匿名 ad-hoc 版未公证。请在“应用程序”中右键 WiFiUsage.app，选择“打开”；若仍被阻止，再到“系统设置”→“隐私与安全性”点“仍要打开”。</p></div></li>
+          <li><span>4</span><div><strong>开始记录</strong><p>打开后会自动识别当前 Wi‑Fi，之后即可按网络分别查看用量。</p></div></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="download" aria-labelledby="download-title">
+      <div class="shell download-panel reveal">
+        <div class="download-main">
+          <img src="/wifiusage/assets/app-icon.png" width="88" height="88" alt="" aria-hidden="true">
+          <div>
+            <p class="section-tag">WiFiUsage 1.0</p>
+            <h2 id="download-title">从今天开始，<br>让流量有迹可循。</h2>
+          </div>
+          <a class="button button-dark" href="/wifiusage/downloads/WiFiUsage-1.0-free.dmg" download>下载免费版</a>
+        </div>
+
+        <dl class="release-meta">
+          <div><dt>系统</dt><dd>macOS 14+</dd></div>
+          <div><dt>架构</dt><dd>Universal</dd></div>
+          <div><dt>大小</dt><dd>2.1 MB</dd></div>
+          <div><dt>签名</dt><dd>匿名 ad-hoc</dd></div>
+          <div><dt>公证</dt><dd>尚未公证</dd></div>
+        </dl>
+
+        <div class="checksum">
+          <span>SHA-256</span>
+          <code>86e6140c01029c81dbd5699b9b57ba3f9b6af20e38aab0c3da6936ed13e366e2</code>
+        </div>
+      </div>
+    </section>
+
+    <section class="github-callout" aria-labelledby="github-title">
+      <div class="shell github-panel reveal">
+        <div class="github-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M12 2.7a9.5 9.5 0 0 0-3 18.52c.48.09.65-.2.65-.46v-1.67c-2.68.58-3.25-1.14-3.25-1.14-.44-1.12-1.07-1.42-1.07-1.42-.87-.6.07-.59.07-.59.97.07 1.48.99 1.48.99.86 1.47 2.25 1.05 2.8.8.09-.62.34-1.05.61-1.29-2.14-.24-4.39-1.07-4.39-4.75 0-1.05.38-1.91.99-2.58-.1-.24-.43-1.22.1-2.54 0 0 .8-.26 2.61.98A9 9 0 0 1 12 7.22a9 9 0 0 1 2.38.32c1.81-1.24 2.61-.98 2.61-.98.53 1.32.2 2.3.1 2.54.62.67.99 1.53.99 2.58 0 3.69-2.26 4.5-4.4 4.74.35.3.65.88.65 1.78v2.56c0 .26.17.55.66.46A9.5 9.5 0 0 0 12 2.7Z"/></svg>
+        </div>
+        <div>
+          <p class="section-tag">开源进度</p>
+          <h2 id="github-title">觉得它有用，<br>给我一颗 Star。</h2>
+          <p>Star 不会解锁功能，但会让我知道这个小工具值得继续更新。代码、版本记录和已知问题也都在 GitHub。</p>
+        </div>
+        <a class="button button-github" href="https://github.com/mx3353672833-debug/WiFiUsage" target="_blank" rel="noopener noreferrer">
+          打开 GitHub
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M6 14 14 6M8 6h6v6"/></svg>
+        </a>
+      </div>
+    </section>
+
+    <section class="feedback" id="feedback" aria-labelledby="feedback-title">
+      <div class="shell feedback-grid reveal">
+        <div class="feedback-intro">
+          <p class="section-tag">问题反馈</p>
+          <h2 id="feedback-title">遇到了什么问题，<br>直接告诉我。</h2>
+          <p>反馈会通过本站安全发送，不会公开你的内容。只有你选择“希望收到回复”时，联系方式才会随反馈一起发送。</p>
+          <div class="feedback-route" aria-hidden="true">
+            <span>你的 Mac</span><i></i><span>反馈信号</span><i></i><span>开发者收件箱</span>
+          </div>
+        </div>
+
+        <form class="feedback-form" id="feedback-form" novalidate>
+          <div class="form-field">
+            <label for="feedback-type">问题类型</label>
+            <select id="feedback-type" name="type">
+              <option value="无法打开应用">无法打开应用</option>
+              <option value="无法识别 Wi-Fi">无法识别 Wi‑Fi</option>
+              <option value="用量显示不准确">用量显示不准确</option>
+              <option value="套餐或计费问题">套餐或计费问题</option>
+              <option value="网页或下载问题">网页或下载问题</option>
+              <option value="功能建议">功能建议</option>
+              <option value="其他问题">其他问题</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label for="feedback-message">遇到了什么问题？<span>必填</span></label>
+            <textarea id="feedback-message" name="message" minlength="8" maxlength="2000" rows="6" required aria-describedby="feedback-message-help" placeholder="请描述发生了什么、你原本想完成什么，以及是否能重复出现。"></textarea>
+            <small id="feedback-message-help"><span id="feedback-count">0</span> / 2000</small>
+          </div>
+
+          <div class="form-field form-field-inline">
+            <div>
+              <label for="feedback-system">macOS 版本</label>
+              <input id="feedback-system" name="system" maxlength="80" placeholder="例如 macOS 15.5">
+            </div>
+            <div>
+              <label for="feedback-device">Mac 型号或芯片</label>
+              <input id="feedback-device" name="device" maxlength="80" placeholder="例如 M2 MacBook Air">
+            </div>
+          </div>
+
+          <label class="reply-choice" for="feedback-reply">
+            <input id="feedback-reply" name="wantsReply" type="checkbox" aria-controls="feedback-contact-wrap" aria-expanded="false">
+            <span class="choice-control" aria-hidden="true"></span>
+            <span><strong>希望收到我的回复</strong><small>勾选后可以留下邮箱、GitHub 或其他联系方式。</small></span>
+          </label>
+
+          <div class="form-field contact-field" id="feedback-contact-wrap" hidden>
+            <label for="feedback-contact">你的联系方式<span>勾选回复后必填</span></label>
+            <input id="feedback-contact" name="contact" maxlength="160" autocomplete="email" placeholder="邮箱、GitHub 用户名或其他联系方式">
+          </div>
+
+          <div class="feedback-honeypot" aria-hidden="true">
+            <label for="feedback-company">公司网址</label>
+            <input id="feedback-company" name="company" tabindex="-1" autocomplete="off">
+          </div>
+
+          <div class="form-actions">
+            <button class="button button-dark" type="submit" id="feedback-submit">发送反馈</button>
+            <a href="https://github.com/mx3353672833-debug/WiFiUsage/issues/new" target="_blank" rel="noopener noreferrer">也可以去 GitHub 提 Issue</a>
+          </div>
+          <p class="form-status" id="feedback-status" role="status" aria-live="polite"></p>
+          <p class="form-privacy">反馈内容和联系方式仅用于处理本次问题，不会写入流量账本或用于营销。</p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="shell footer-grid">
+      <div><strong>流量账本</strong><span>WiFiUsage</span></div>
+      <nav aria-label="页脚导航">
+        <a href="#details">功能</a>
+        <a href="#feedback">反馈</a>
+        <a href="https://github.com/mx3353672833-debug/WiFiUsage" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="#main">回到顶部</a>
+      </nav>
+      <p>© 2026 WiFiUsage</p>
+    </div>
+  </footer>
+</body>
+</html>

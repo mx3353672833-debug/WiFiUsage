@@ -12,12 +12,15 @@
 		108574A3B60F37EEED17E26E /* UsageRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64253045AE0C25F4AE9DB5FC /* UsageRepository.swift */; };
 		1466BF1B9C47C142F0CD1B9E /* SystemInterfaceCounterProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1FAA2A8B610A21D93DFC830 /* SystemInterfaceCounterProvider.swift */; };
 		1DC5D84E935BF94EF03BEC59 /* UsageBillingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 290AADA62B42D5762FE76A74 /* UsageBillingTests.swift */; };
+		28D21D33317D8E924EC5E206 /* AppRuntimeConfigurationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B0E909080CE1C70E3BF699C /* AppRuntimeConfigurationTests.swift */; };
 		2B7A71AE34743CF3E4B497D8 /* SystemBridge.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4E5C6E5BA8ECDB7EA5000BB3 /* SystemBridge.h */; };
 		2CE54DB5315A0370AA8FEB7C /* libUsageCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E7E0B0364F4C71A2A153F9C /* libUsageCore.a */; };
+		2F475F8C4F270C938EE1E582 /* AppRuntimeConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B930154D812BF4982147B7 /* AppRuntimeConfiguration.swift */; };
 		2FC6C36D07D6BF77DF2D2B02 /* SQLiteUsageRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FADB21F9BEBBA6D00F33E12 /* SQLiteUsageRepositoryTests.swift */; };
 		35AC20B5D27BE6D542A86DC2 /* UsageModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7F73ECD874F892836CBEB5B /* UsageModels.swift */; };
 		38B7BD9EA727E5E6BD62C824 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2A342AEFA419AFB5098C5D67 /* Assets.xcassets */; };
 		3DA626985DECF24116CD549B /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BBF682D33D85977C96E6CB /* RootView.swift */; };
+		40DEC678C3B95A97CF671CDB /* PhysicalWiFiSamplerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01ABF294401210A71B68DDB /* PhysicalWiFiSamplerTests.swift */; };
 		480658EAC6DB95848A485486 /* UsagePeriodTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BAC0FF65CA7AF50D08EEA7 /* UsagePeriodTests.swift */; };
 		4AFBCDD7DC84DC1D64E9721A /* ApplicationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA46148AA480455FD43D5D2E /* ApplicationDelegate.swift */; };
 		4CB9F0030C411542F547E8B4 /* ProcessNetworkSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76868546FB1615F87A15CDF /* ProcessNetworkSnapshot.swift */; };
@@ -25,27 +28,39 @@
 		613A543F7B1312A84F9892F7 /* UsageComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDEDD86F14BE3BEB4E0806F1 /* UsageComponents.swift */; };
 		6DFA84D9C2EF1796D52F5615 /* WiFiUsageApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E0C29288156174F7B80F344 /* WiFiUsageApp.swift */; };
 		769AB0E604F4A09E0C503835 /* module.modulemap in CopyFiles */ = {isa = PBXBuildFile; fileRef = 13DC4489329111A61045EFE8 /* module.modulemap */; };
+		7F01AD87D59F66C09723F695 /* IPConfigSSIDProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A445193396274E8D111E55 /* IPConfigSSIDProvider.swift */; };
 		8CCB2BAF3636C1D0070F4D03 /* SQLiteUsageRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6382AE9665EDB08837F590BD /* SQLiteUsageRepository.swift */; };
 		90C0E1149B69757EB1C33D87 /* UsageBilling.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDD1DC280E1748F1F3D1AC5A /* UsageBilling.swift */; };
 		92596F38F1BCA465BF5A3AF8 /* PlansView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 242A8AB8884AE54D92D101E9 /* PlansView.swift */; };
+		98D81D63B27DC35AC504F5C6 /* IPConfigSummaryParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499824C91AEB2FC238BE4B85 /* IPConfigSummaryParserTests.swift */; };
 		9C006255DC141E3A9F221D16 /* ApplicationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3C128F7F90AA175B78A985 /* ApplicationsView.swift */; };
 		A8227990FFA373EAC13CBAC9 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24675F9AF3F5E66BFDF64451 /* DashboardView.swift */; };
 		B57D07D260C4D4C065FCA5A1 /* MenuBarUsageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B7021181B213F344A24B5C3 /* MenuBarUsageView.swift */; };
 		B9728397CDCBC94118BFACAB /* WiFiNetworkResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37693859721FB140399EAD60 /* WiFiNetworkResolver.swift */; };
 		BDC36075A3A1994240A4B670 /* UsageDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CB7D1762796A7E342DCB6E /* UsageDesign.swift */; };
+		C38AE4952E9352F634F9D4EE /* WiFiNetworkNameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C8E8E2716A6BB6CCDA3641 /* WiFiNetworkNameTests.swift */; };
 		CD912A31824BF1A5DEE3F36C /* libUsageCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E7E0B0364F4C71A2A153F9C /* libUsageCore.a */; };
 		D4DC0FA1B63DE4ED5DE31ED8 /* ProcessNetworkSampler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F0FA1A10664667CD1F3350 /* ProcessNetworkSampler.swift */; };
 		D9E2BD54F3DAA5D05A755E7D /* ApplicationCostAllocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5F01A173514C25D897C7E6 /* ApplicationCostAllocator.swift */; };
 		DE88BA2B98418B8F12A62015 /* ProcessNetworkSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AEC9E49F113D436F78510CA /* ProcessNetworkSnapshotTests.swift */; };
+		DEA9D5ED3AFA938DEA3C610A /* LaunchAtLoginManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC48CB402A557056CD0E37A /* LaunchAtLoginManagerTests.swift */; };
 		DEFF5BE8983A2F2DB6DAA3CF /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773ECADD20998C1985FDE8E1 /* SettingsView.swift */; };
 		E79B271703A07E01E021BA32 /* WiFiNetworksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3013553743ED6312759D8B77 /* WiFiNetworksView.swift */; };
 		EBA15BBFEBA151B412658B87 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6394DADCF59A640A8A410A00 /* AppModel.swift */; };
+		F30D32DFE94FFF25C99B4370 /* WiFiNetworkName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 292D84822E3D7F7A679AB090 /* WiFiNetworkName.swift */; };
 		F5A2DBD737430D632ECA32D6 /* PhysicalWiFiSampler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB9367576A4FC44031F1DF1 /* PhysicalWiFiSampler.swift */; };
 		F5C9CDE1E7737D16028D56F8 /* UsagePeriod.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1514254A68B763D816EF5DC /* UsagePeriod.swift */; };
 		FB11EF3BD605C69C25F36F2F /* UsageFormatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF7C97610E7F81AEA68848B /* UsageFormatting.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		11C2CC74F45DC0C2874D7F24 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 68A8C7ADFFA269552411677F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A35BAA968CDB6596FB25D8C5;
+			remoteInfo = WiFiUsage;
+		};
 		464C9CC1B56DB833BDDEA7B5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 68A8C7ADFFA269552411677F /* Project object */;
@@ -87,16 +102,20 @@
 		07233D2B13E0C21D3A098109 /* UsageCore-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "UsageCore-Info.plist"; sourceTree = "<group>"; };
 		13DC4489329111A61045EFE8 /* module.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
 		1AEC9E49F113D436F78510CA /* ProcessNetworkSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessNetworkSnapshotTests.swift; sourceTree = "<group>"; };
+		1DC48CB402A557056CD0E37A /* LaunchAtLoginManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchAtLoginManagerTests.swift; sourceTree = "<group>"; };
 		208308019ECFBA168606EB93 /* InterfaceCounters.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = InterfaceCounters.c; sourceTree = "<group>"; };
 		242A8AB8884AE54D92D101E9 /* PlansView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlansView.swift; sourceTree = "<group>"; };
 		24675F9AF3F5E66BFDF64451 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
+		28772D1687233AD54B7A1C3B /* AppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		290AADA62B42D5762FE76A74 /* UsageBillingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageBillingTests.swift; sourceTree = "<group>"; };
+		292D84822E3D7F7A679AB090 /* WiFiNetworkName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WiFiNetworkName.swift; sourceTree = "<group>"; };
 		2A342AEFA419AFB5098C5D67 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2AB9367576A4FC44031F1DF1 /* PhysicalWiFiSampler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicalWiFiSampler.swift; sourceTree = "<group>"; };
 		2E7E0B0364F4C71A2A153F9C /* libUsageCore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libUsageCore.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		3013553743ED6312759D8B77 /* WiFiNetworksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WiFiNetworksView.swift; sourceTree = "<group>"; };
 		37693859721FB140399EAD60 /* WiFiNetworkResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WiFiNetworkResolver.swift; sourceTree = "<group>"; };
 		43CB7D1762796A7E342DCB6E /* UsageDesign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageDesign.swift; sourceTree = "<group>"; };
+		499824C91AEB2FC238BE4B85 /* IPConfigSummaryParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IPConfigSummaryParserTests.swift; sourceTree = "<group>"; };
 		4E5C6E5BA8ECDB7EA5000BB3 /* SystemBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SystemBridge.h; sourceTree = "<group>"; };
 		5E0C29288156174F7B80F344 /* WiFiUsageApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WiFiUsageApp.swift; sourceTree = "<group>"; };
 		5FADB21F9BEBBA6D00F33E12 /* SQLiteUsageRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLiteUsageRepositoryTests.swift; sourceTree = "<group>"; };
@@ -105,19 +124,25 @@
 		64253045AE0C25F4AE9DB5FC /* UsageRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageRepository.swift; sourceTree = "<group>"; };
 		6B7021181B213F344A24B5C3 /* MenuBarUsageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarUsageView.swift; sourceTree = "<group>"; };
 		6D71270B4AE48429AE5A7494 /* libSystemBridge.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSystemBridge.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		76B930154D812BF4982147B7 /* AppRuntimeConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRuntimeConfiguration.swift; sourceTree = "<group>"; };
 		773ECADD20998C1985FDE8E1 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		7B0E909080CE1C70E3BF699C /* AppRuntimeConfigurationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRuntimeConfigurationTests.swift; sourceTree = "<group>"; };
 		7D5F01A173514C25D897C7E6 /* ApplicationCostAllocator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationCostAllocator.swift; sourceTree = "<group>"; };
 		87432083DC01C442CD6DE19B /* LaunchAtLoginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchAtLoginManager.swift; sourceTree = "<group>"; };
+		A01ABF294401210A71B68DDB /* PhysicalWiFiSamplerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicalWiFiSamplerTests.swift; sourceTree = "<group>"; };
 		A48C360D73D0556CF94BAEAE /* WiFiUsage.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WiFiUsage.entitlements; sourceTree = "<group>"; };
 		A5BAC0FF65CA7AF50D08EEA7 /* UsagePeriodTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsagePeriodTests.swift; sourceTree = "<group>"; };
 		B1514254A68B763D816EF5DC /* UsagePeriod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsagePeriod.swift; sourceTree = "<group>"; };
 		B1F0FA1A10664667CD1F3350 /* ProcessNetworkSampler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessNetworkSampler.swift; sourceTree = "<group>"; };
 		B1FAA2A8B610A21D93DFC830 /* SystemInterfaceCounterProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemInterfaceCounterProvider.swift; sourceTree = "<group>"; };
-		B65A5A067B758E8CE0410DC2 /* WiFiUsage-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "WiFiUsage-Info.plist"; sourceTree = "<group>"; };
 		B76868546FB1615F87A15CDF /* ProcessNetworkSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessNetworkSnapshot.swift; sourceTree = "<group>"; };
+		C3A445193396274E8D111E55 /* IPConfigSSIDProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IPConfigSSIDProvider.swift; sourceTree = "<group>"; };
 		CA3C128F7F90AA175B78A985 /* ApplicationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationsView.swift; sourceTree = "<group>"; };
 		CDEDD86F14BE3BEB4E0806F1 /* UsageComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageComponents.swift; sourceTree = "<group>"; };
 		CDF7C97610E7F81AEA68848B /* UsageFormatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageFormatting.swift; sourceTree = "<group>"; };
+		D8C8E8E2716A6BB6CCDA3641 /* WiFiNetworkNameTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WiFiNetworkNameTests.swift; sourceTree = "<group>"; };
+		E3AD987B2104F743D97CF19C /* WiFiUsage-Public-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "WiFiUsage-Public-Info.plist"; sourceTree = "<group>"; };
+		E4113FFBD99E0E8EAA88F97A /* WiFiUsage-Personal-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "WiFiUsage-Personal-Info.plist"; sourceTree = "<group>"; };
 		E4BBF682D33D85977C96E6CB /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		E942DC35DC785971DD55938B /* WiFiUsage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WiFiUsage.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F7A54CCA9C9A3462F4BBB650 /* UsageCoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UsageCoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -150,6 +175,7 @@
 		1A5B6E0C429BF58DA8D9650F /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				2EDF80A6EC19A059398FCD89 /* AppTests */,
 				D067BD868DAE8E3942170F72 /* UsageCoreTests */,
 			);
 			path = Tests;
@@ -159,6 +185,7 @@
 			isa = PBXGroup;
 			children = (
 				F7F73ECD874F892836CBEB5B /* UsageModels.swift */,
+				292D84822E3D7F7A679AB090 /* WiFiNetworkName.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -188,6 +215,17 @@
 				5BB8ABED18A79AA0FDAC1DC6 /* UsageCore */,
 			);
 			path = Sources;
+			sourceTree = "<group>";
+		};
+		2EDF80A6EC19A059398FCD89 /* AppTests */ = {
+			isa = PBXGroup;
+			children = (
+				7B0E909080CE1C70E3BF699C /* AppRuntimeConfigurationTests.swift */,
+				499824C91AEB2FC238BE4B85 /* IPConfigSummaryParserTests.swift */,
+				1DC48CB402A557056CD0E37A /* LaunchAtLoginManagerTests.swift */,
+				A01ABF294401210A71B68DDB /* PhysicalWiFiSamplerTests.swift */,
+			);
+			path = AppTests;
 			sourceTree = "<group>";
 		};
 		384F2016D95110F934C4EB8E /* WidgetSnapshot */ = {
@@ -259,6 +297,7 @@
 		86F11C71056A345CA4E3774E /* Sampling */ = {
 			isa = PBXGroup;
 			children = (
+				C3A445193396274E8D111E55 /* IPConfigSSIDProvider.swift */,
 				2AB9367576A4FC44031F1DF1 /* PhysicalWiFiSampler.swift */,
 				B1F0FA1A10664667CD1F3350 /* ProcessNetworkSampler.swift */,
 				B1FAA2A8B610A21D93DFC830 /* SystemInterfaceCounterProvider.swift */,
@@ -294,6 +333,7 @@
 			isa = PBXGroup;
 			children = (
 				FA46148AA480455FD43D5D2E /* ApplicationDelegate.swift */,
+				76B930154D812BF4982147B7 /* AppRuntimeConfiguration.swift */,
 				E4BBF682D33D85977C96E6CB /* RootView.swift */,
 				5E0C29288156174F7B80F344 /* WiFiUsageApp.swift */,
 			);
@@ -320,6 +360,7 @@
 		C947E99B989C390F796F1108 /* Products */ = {
 			isa = PBXGroup;
 			children = (
+				28772D1687233AD54B7A1C3B /* AppTests.xctest */,
 				6D71270B4AE48429AE5A7494 /* libSystemBridge.a */,
 				2E7E0B0364F4C71A2A153F9C /* libUsageCore.a */,
 				F7A54CCA9C9A3462F4BBB650 /* UsageCoreTests.xctest */,
@@ -335,6 +376,7 @@
 				5FADB21F9BEBBA6D00F33E12 /* SQLiteUsageRepositoryTests.swift */,
 				290AADA62B42D5762FE76A74 /* UsageBillingTests.swift */,
 				A5BAC0FF65CA7AF50D08EEA7 /* UsagePeriodTests.swift */,
+				D8C8E8E2716A6BB6CCDA3641 /* WiFiNetworkNameTests.swift */,
 			);
 			path = UsageCoreTests;
 			sourceTree = "<group>";
@@ -344,7 +386,8 @@
 			children = (
 				2A342AEFA419AFB5098C5D67 /* Assets.xcassets */,
 				07233D2B13E0C21D3A098109 /* UsageCore-Info.plist */,
-				B65A5A067B758E8CE0410DC2 /* WiFiUsage-Info.plist */,
+				E4113FFBD99E0E8EAA88F97A /* WiFiUsage-Personal-Info.plist */,
+				E3AD987B2104F743D97CF19C /* WiFiUsage-Public-Info.plist */,
 				A48C360D73D0556CF94BAEAE /* WiFiUsage.entitlements */,
 			);
 			path = Config;
@@ -441,6 +484,24 @@
 			productReference = F7A54CCA9C9A3462F4BBB650 /* UsageCoreTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		80A564A67D4D01A4D3163F39 /* AppTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5A77A2E267547A9154FD7BE4 /* Build configuration list for PBXNativeTarget "AppTests" */;
+			buildPhases = (
+				0D98BFF2857824C5E36C2BD0 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				81D0F5E99B0399D140D19615 /* PBXTargetDependency */,
+			);
+			name = AppTests;
+			packageProductDependencies = (
+			);
+			productName = AppTests;
+			productReference = 28772D1687233AD54B7A1C3B /* AppTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		83B5538B78AFC38038A4716B /* UsageCore */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4EEA91716204B96334D673C4 /* Build configuration list for PBXNativeTarget "UsageCore" */;
@@ -495,6 +556,9 @@
 					3CA1CA1C88F90633AEAC3398 = {
 						ProvisioningStyle = Manual;
 					};
+					80A564A67D4D01A4D3163F39 = {
+						ProvisioningStyle = Manual;
+					};
 					83B5538B78AFC38038A4716B = {
 						ProvisioningStyle = Manual;
 					};
@@ -514,6 +578,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
+				80A564A67D4D01A4D3163F39 /* AppTests */,
 				39FFD188751BA6606E86CE62 /* SystemBridge */,
 				83B5538B78AFC38038A4716B /* UsageCore */,
 				3CA1CA1C88F90633AEAC3398 /* UsageCoreTests */,
@@ -553,6 +618,17 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		0D98BFF2857824C5E36C2BD0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				28D21D33317D8E924EC5E206 /* AppRuntimeConfigurationTests.swift in Sources */,
+				98D81D63B27DC35AC504F5C6 /* IPConfigSummaryParserTests.swift in Sources */,
+				DEA9D5ED3AFA938DEA3C610A /* LaunchAtLoginManagerTests.swift in Sources */,
+				40DEC678C3B95A97CF671CDB /* PhysicalWiFiSamplerTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		14455D722DBDA5CB9251FB7B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -564,6 +640,7 @@
 				35AC20B5D27BE6D542A86DC2 /* UsageModels.swift in Sources */,
 				F5C9CDE1E7737D16028D56F8 /* UsagePeriod.swift in Sources */,
 				108574A3B60F37EEED17E26E /* UsageRepository.swift in Sources */,
+				F30D32DFE94FFF25C99B4370 /* WiFiNetworkName.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -580,9 +657,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				EBA15BBFEBA151B412658B87 /* AppModel.swift in Sources */,
+				2F475F8C4F270C938EE1E582 /* AppRuntimeConfiguration.swift in Sources */,
 				4AFBCDD7DC84DC1D64E9721A /* ApplicationDelegate.swift in Sources */,
 				9C006255DC141E3A9F221D16 /* ApplicationsView.swift in Sources */,
 				A8227990FFA373EAC13CBAC9 /* DashboardView.swift in Sources */,
+				7F01AD87D59F66C09723F695 /* IPConfigSSIDProvider.swift in Sources */,
 				097C75A709A947BA0FFB670A /* LaunchAtLoginManager.swift in Sources */,
 				B57D07D260C4D4C065FCA5A1 /* MenuBarUsageView.swift in Sources */,
 				F5A2DBD737430D632ECA32D6 /* PhysicalWiFiSampler.swift in Sources */,
@@ -608,6 +687,7 @@
 				2FC6C36D07D6BF77DF2D2B02 /* SQLiteUsageRepositoryTests.swift in Sources */,
 				1DC5D84E935BF94EF03BEC59 /* UsageBillingTests.swift in Sources */,
 				480658EAC6DB95848A485486 /* UsagePeriodTests.swift in Sources */,
+				C38AE4952E9352F634F9D4EE /* WiFiNetworkNameTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -623,6 +703,11 @@
 			isa = PBXTargetDependency;
 			target = 83B5538B78AFC38038A4716B /* UsageCore */;
 			targetProxy = 99667A6016D8C0437666A4C4 /* PBXContainerItemProxy */;
+		};
+		81D0F5E99B0399D140D19615 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A35BAA968CDB6596FB25D8C5 /* WiFiUsage */;
+			targetProxy = 11C2CC74F45DC0C2874D7F24 /* PBXContainerItemProxy */;
 		};
 		9DC75DFCE8B62027641FD5EA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -654,6 +739,70 @@
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
+		};
+		141CBA6C336D7AF8C6E93421 /* PublicRelease */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGNING_REQUIRED = NO;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = NO;
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
+			};
+			name = PublicRelease;
 		};
 		1B9F1EA01F0013ECFB53EA0B /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -708,6 +857,7 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
+				ENABLE_TESTABILITY = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -720,6 +870,48 @@
 			};
 			name = Debug;
 		};
+		25FFAE6C9D0EE66B78BE11CA /* PublicRelease */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_TESTABILITY = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = one.xjp.WiFiUsage.AppTests;
+				PRODUCT_NAME = AppTests;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WiFiUsage.app/Contents/MacOS/WiFiUsage";
+			};
+			name = PublicRelease;
+		};
+		2D7F5131CEE30E1543AC805C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_TESTABILITY = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = one.xjp.WiFiUsage.AppTests;
+				PRODUCT_NAME = AppTests;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WiFiUsage.app/Contents/MacOS/WiFiUsage";
+			};
+			name = Debug;
+		};
 		3A2A7AF4D33213F8A31B6F17 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -728,8 +920,9 @@
 				CODE_SIGN_ENTITLEMENTS = Config/WiFiUsage.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
 				ENABLE_APP_SANDBOX = NO;
+				ENABLE_TESTABILITY = YES;
 				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = "Config/WiFiUsage-Info.plist";
+				INFOPLIST_FILE = "Config/WiFiUsage-Personal-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -745,6 +938,27 @@
 				SKIP_INSTALL = NO;
 			};
 			name = Debug;
+		};
+		3AB30353147E32A56DCCC0E2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_TESTABILITY = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = one.xjp.WiFiUsage.AppTests;
+				PRODUCT_NAME = AppTests;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WiFiUsage.app/Contents/MacOS/WiFiUsage";
+			};
+			name = Release;
 		};
 		538C744C5C57A97EFAB7FA95 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -780,8 +994,9 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				ENABLE_APP_SANDBOX = NO;
+				ENABLE_TESTABILITY = YES;
 				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = "Config/WiFiUsage-Info.plist";
+				INFOPLIST_FILE = "Config/WiFiUsage-Personal-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -797,6 +1012,112 @@
 				SKIP_INSTALL = NO;
 			};
 			name = Release;
+		};
+		5BF01E73D10493DF42DE9806 /* PublicRelease */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/Sources/SystemBridge/include",
+				);
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = one.xjp.WiFiUsage.SystemBridge;
+				PRODUCT_MODULE_NAME = SystemBridge;
+				PRODUCT_NAME = SystemBridge;
+				PUBLIC_HEADERS_FOLDER_PATH = include/SystemBridge;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = PublicRelease;
+		};
+		60C3FBB34D6F60B12EECBE27 /* PublicRelease */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = one.xjp.WiFiUsage.UsageCoreTests;
+				PRODUCT_NAME = UsageCoreTests;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				TEST_HOST = "";
+			};
+			name = PublicRelease;
+		};
+		7015132C7B87DB7290F545A5 /* PublicRelease */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
+				ENABLE_TESTABILITY = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_MODULE_NAME = UsageCore;
+				PRODUCT_NAME = UsageCore;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = PublicRelease;
+		};
+		7362F30495F02EE8CFF6E50A /* PublicTest */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
+				ENABLE_TESTABILITY = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_MODULE_NAME = UsageCore;
+				PRODUCT_NAME = UsageCore;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = PublicTest;
+		};
+		8046E27E0081F198C52083EE /* PublicTest */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_TESTABILITY = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = one.xjp.WiFiUsage.AppTests;
+				PRODUCT_NAME = AppTests;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WiFiUsage.app/Contents/MacOS/WiFiUsage";
+			};
+			name = PublicTest;
 		};
 		95AC5DA190138EC3CC40D011 /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -867,6 +1188,7 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
+				ENABLE_TESTABILITY = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -878,6 +1200,163 @@
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
+		};
+		9A5FB162F34009AF58B5F901 /* PublicTest */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGNING_REQUIRED = NO;
+				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_APP_SANDBOX = NO;
+				ENABLE_TESTABILITY = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "Config/WiFiUsage-Public-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = one.xjp.WiFiUsage.PublicTest;
+				PRODUCT_NAME = WiFiUsage;
+				SDKROOT = macosx;
+				SKIP_INSTALL = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) WU_PUBLIC_TEST";
+				WU_APPLICATION_SUPPORT_DIRECTORY = "WiFiUsage-PublicTest";
+				WU_BUNDLE_DISPLAY_NAME = "流量账本 Public Test";
+				WU_DISTRIBUTION_VARIANT = PublicTest;
+			};
+			name = PublicTest;
+		};
+		A1FF8E1227F0EFF7F62A5C77 /* PublicTest */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGNING_REQUIRED = NO;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = NO;
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
+			};
+			name = PublicTest;
+		};
+		A84EDF0E3B29DAC54AFE8FC2 /* PublicTest */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/Sources/SystemBridge/include",
+				);
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = one.xjp.WiFiUsage.SystemBridge;
+				PRODUCT_MODULE_NAME = SystemBridge;
+				PRODUCT_NAME = SystemBridge;
+				PUBLIC_HEADERS_FOLDER_PATH = include/SystemBridge;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = PublicTest;
+		};
+		C45FAC0DC9EDC828AAF4B114 /* PublicRelease */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGNING_REQUIRED = NO;
+				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_APP_SANDBOX = NO;
+				ENABLE_TESTABILITY = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "Config/WiFiUsage-Public-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = one.xjp.WiFiUsage;
+				PRODUCT_NAME = WiFiUsage;
+				SDKROOT = macosx;
+				SKIP_INSTALL = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) WU_PUBLIC_RELEASE";
+				WU_APPLICATION_SUPPORT_DIRECTORY = WiFiUsage;
+				WU_BUNDLE_DISPLAY_NAME = "流量账本";
+				WU_DISTRIBUTION_VARIANT = PublicRelease;
+			};
+			name = PublicRelease;
 		};
 		DCBEFC9535458627BF86A404 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -945,6 +1424,30 @@
 			};
 			name = Debug;
 		};
+		E17B7AF3E6BD55C0FF93C22E /* PublicTest */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = one.xjp.WiFiUsage.UsageCoreTests;
+				PRODUCT_NAME = UsageCoreTests;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				TEST_HOST = "";
+			};
+			name = PublicTest;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -952,6 +1455,8 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1C7DECAB41C8E6D6784DA16B /* Debug */,
+				5BF01E73D10493DF42DE9806 /* PublicRelease */,
+				A84EDF0E3B29DAC54AFE8FC2 /* PublicTest */,
 				0D974F4D679DF4ECBCFB53A2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -961,6 +1466,8 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DCBEFC9535458627BF86A404 /* Debug */,
+				141CBA6C336D7AF8C6E93421 /* PublicRelease */,
+				A1FF8E1227F0EFF7F62A5C77 /* PublicTest */,
 				95AC5DA190138EC3CC40D011 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -970,6 +1477,8 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3A2A7AF4D33213F8A31B6F17 /* Debug */,
+				C45FAC0DC9EDC828AAF4B114 /* PublicRelease */,
+				9A5FB162F34009AF58B5F901 /* PublicTest */,
 				549921EE48175C7C1880E8D6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -979,7 +1488,20 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1D2988CBF25D61FE2430F406 /* Debug */,
+				7015132C7B87DB7290F545A5 /* PublicRelease */,
+				7362F30495F02EE8CFF6E50A /* PublicTest */,
 				9710FDE3249D9F3AF8D624B2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		5A77A2E267547A9154FD7BE4 /* Build configuration list for PBXNativeTarget "AppTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2D7F5131CEE30E1543AC805C /* Debug */,
+				25FFAE6C9D0EE66B78BE11CA /* PublicRelease */,
+				8046E27E0081F198C52083EE /* PublicTest */,
+				3AB30353147E32A56DCCC0E2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
@@ -988,6 +1510,8 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				538C744C5C57A97EFAB7FA95 /* Debug */,
+				60C3FBB34D6F60B12EECBE27 /* PublicRelease */,
+				E17B7AF3E6BD55C0FF93C22E /* PublicTest */,
 				1B9F1EA01F0013ECFB53EA0B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;

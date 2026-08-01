@@ -8,14 +8,23 @@ public enum LaunchAtLoginState: Equatable, Sendable {
     case notFound
 }
 
+public protocol LaunchAtLoginManaging: Sendable {
+    var state: LaunchAtLoginState { get }
+    func setEnabled(_ enabled: Bool) throws
+    func openSystemSettings()
+}
+
 public enum LaunchAtLoginError: LocalizedError {
     case unstableApplicationLocation
+    case invalidBundleIdentifier
     case invalidPropertyList
 
     public var errorDescription: String? {
         switch self {
         case .unstableApplicationLocation:
             "请先把 WiFiUsage 放进“应用程序”文件夹，再开启登录时启动。"
+        case .invalidBundleIdentifier:
+            "应用标识无效，无法配置登录时启动。"
         case .invalidPropertyList:
             "无法创建登录启动配置。"
         }
@@ -27,26 +36,40 @@ public enum LaunchAtLoginError: LocalizedError {
 /// `SMAppService.mainApp` rejects ad-hoc signed builds on some macOS releases.
 /// A user LaunchAgent provides the same next-login behavior without requiring
 /// an Apple Developer Program membership or administrator privileges.
-public struct LaunchAtLoginManager: Sendable {
-    private static let label = "one.xjp.WiFiUsage.launchAtLogin"
+public struct LaunchAtLoginManager: LaunchAtLoginManaging, Sendable {
+    public let label: String
+    private let applicationURL: URL
+    private let hasValidBundleIdentifier: Bool
 
-    public init() {}
+    public init(
+        bundleIdentifier: String? = Bundle.main.bundleIdentifier,
+        applicationURL: URL = Bundle.main.bundleURL
+    ) {
+        let identifier = bundleIdentifier?.trimmingCharacters(in: .whitespacesAndNewlines)
+        hasValidBundleIdentifier = identifier.map(Self.isValidBundleIdentifier) ?? false
+        label = hasValidBundleIdentifier ? "\(identifier!).launchAtLogin" : ""
+        self.applicationURL = applicationURL.standardizedFileURL
+    }
 
     public var state: LaunchAtLoginState {
-        guard isInStableApplicationsFolder else { return .notFound }
+        guard hasValidBundleIdentifier, isInStableApplicationsFolder else { return .notFound }
         guard let data = try? Data(contentsOf: launchAgentURL),
               let propertyList = try? PropertyListSerialization.propertyList(
                 from: data,
                 format: nil
               ) as? [String: Any],
+              propertyList["Label"] as? String == label,
               let arguments = propertyList["ProgramArguments"] as? [String],
-              arguments.last == Bundle.main.bundleURL.path else {
+              arguments.last == applicationURL.path else {
             return .notRegistered
         }
         return .enabled
     }
 
     public func setEnabled(_ enabled: Bool) throws {
+        guard hasValidBundleIdentifier else {
+            throw LaunchAtLoginError.invalidBundleIdentifier
+        }
         if enabled {
             guard isInStableApplicationsFolder else {
                 throw LaunchAtLoginError.unstableApplicationLocation
@@ -85,17 +108,28 @@ public struct LaunchAtLoginManager: Sendable {
         NSWorkspace.shared.open(url)
     }
 
+    private static func isValidBundleIdentifier(_ identifier: String) -> Bool {
+        guard !identifier.isEmpty,
+              !identifier.hasPrefix("."),
+              !identifier.hasSuffix(".") else {
+            return false
+        }
+        let allowed = CharacterSet.alphanumerics.union(CharacterSet(charactersIn: ".-"))
+        return identifier.unicodeScalars.allSatisfy(allowed.contains)
+            && identifier.split(separator: ".").allSatisfy { !$0.isEmpty }
+    }
+
     private var launchAgentsDirectory: URL {
         FileManager.default.homeDirectoryForCurrentUser
             .appendingPathComponent("Library/LaunchAgents", isDirectory: true)
     }
 
     private var launchAgentURL: URL {
-        launchAgentsDirectory.appendingPathComponent("\(Self.label).plist")
+        launchAgentsDirectory.appendingPathComponent("\(label).plist")
     }
 
     private var isInStableApplicationsFolder: Bool {
-        let applicationPath = Bundle.main.bundleURL.standardizedFileURL.path
+        let applicationPath = applicationURL.path
         let systemApplications = URL(fileURLWithPath: "/Applications", isDirectory: true)
             .standardizedFileURL.path + "/"
         let userApplications = FileManager.default.homeDirectoryForCurrentUser
@@ -107,11 +141,11 @@ public struct LaunchAtLoginManager: Sendable {
 
     private var launchAgentPropertyList: [String: Any] {
         [
-            "Label": Self.label,
+            "Label": label,
             "ProgramArguments": [
                 "/usr/bin/open",
                 "-gj",
-                Bundle.main.bundleURL.path
+                applicationURL.path
             ],
             "RunAtLoad": true,
             "ProcessType": "Background",
@@ -131,7 +165,7 @@ public struct LaunchAtLoginManager: Sendable {
     private func unloadLaunchAgent() {
         _ = runLaunchctl([
             "bootout",
-            "\(launchDomain)/\(Self.label)"
+            "\(launchDomain)/\(label)"
         ])
     }
 

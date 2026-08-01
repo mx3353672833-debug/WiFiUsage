@@ -33,19 +33,32 @@
 - 支持登录时自动启动。
 - 不注册账号、不安装驱动，所有数据仅保存在本机。
 
-## 获取源码
+## 下载与安装
 
-本项目目前仅发布源代码，不提供预编译的 `.app` 或 `.dmg` 安装包。
+可从官网下载适用于 Apple Silicon 和 Intel Mac 的 Universal DMG：
 
-- 前往 [Releases](https://github.com/mx3353672833-debug/WiFiUsage/releases) 下载对应版本的 Source code。
-- 或使用 Git 克隆仓库：
+- [下载流量账本 1.0](https://xjp.one/wifiusage/downloads/WiFiUsage-1.0-free.dmg)
+- [打开产品官网](https://xjp.one/wifiusage/)
+
+安装步骤：
+
+1. 打开 DMG，将 `WiFiUsage.app` 拖入“应用程序”。
+2. 当前版本使用匿名 ad-hoc 签名，尚未经过 Apple 公证。首次启动请在“应用程序”中右键 `WiFiUsage.app`，选择“打开”；若仍被阻止，再到“系统设置”→“隐私与安全性”点“仍要打开”。
+3. 首次运行后，在应用设置中允许识别当前 Wi‑Fi 名称。
+
+发布文件：
+
+```text
+WiFiUsage-1.0-free.dmg
+SHA-256: 86e6140c01029c81dbd5699b9b57ba3f9b6af20e38aab0c3da6936ed13e366e2
+```
+
+也可以前往 [Releases](https://github.com/mx3353672833-debug/WiFiUsage/releases) 获取安装包与源码，或克隆仓库自行构建：
 
 ```sh
 git clone https://github.com/mx3353672833-debug/WiFiUsage.git
 cd WiFiUsage
 ```
-
-获取源码后，请按照下方“从源码构建”部分生成并运行应用。
 
 系统要求：
 
@@ -54,12 +67,12 @@ cd WiFiUsage
 
 ## 第一次使用
 
-1. 打开“设置”，允许应用识别当前 Wi‑Fi 名称。
+1. 打开应用，确认首页显示“正在记录”。公共免费版会直接识别当前 Wi‑Fi，无需授予定位权限。
 2. 进入“Wi‑Fi”页面，确认当前网络已经显示。
 3. 进入“套餐”页面，添加套餐并选择需要绑定的 Wi‑Fi。
 4. 如需减少应用未运行期间的统计缺口，可在设置中开启“登录时启动”。
 
-macOS 将读取 Wi‑Fi 名称归入定位权限。流量账本不会读取、保存或上传地理位置；该权限只用于获取当前连接的 Wi‑Fi 名称。
+公共免费版通过 macOS 本机网络信息识别当前 Wi‑Fi，不申请定位权限。使用个人开发签名从源码运行时，可以选择启用 CoreWLAN；此时 macOS 可能把读取 Wi‑Fi 名称归入定位权限。流量账本不会读取、保存或上传地理位置。
 
 ## 数据与隐私
 
@@ -148,7 +161,7 @@ xcodebuild \
   build
 ```
 
-本仓库不包含维护者的签名配置。如需读取 Wi‑Fi 名称，请按照 Xcode 提示为本机构建选择自己的开发签名。
+公共发布 DMG 使用匿名 ad-hoc 签名，未包含开发证书、provisioning profile 或定位 entitlement，也尚未经过 Apple 公证。如从源码构建个人版，请按照 Xcode 提示为本机构建选择自己的开发签名；个人版通过 CoreWLAN 读取 Wi‑Fi 名称时需要对应权限。
 
 ## 项目结构
 

@@ -20,15 +20,25 @@
 - macOS 14 或更高版本
 - Apple Silicon Mac 或 Intel Mac
 
-## 获取方式
+## 下载与安装
 
-本版本仅发布源代码，不提供预编译的 `.app` 或 `.dmg` 安装包。
+从官网下载 Universal DMG，支持 Apple Silicon 和 Intel Mac：
 
-1. 在本 Release 的 Assets 中下载 Source code（ZIP 或 TAR.GZ）。
-2. 按照仓库 README 的“从源码构建”说明生成并运行应用。
-3. 首次运行后，在应用设置中允许识别 Wi‑Fi 名称。
+- 官网：<https://xjp.one/wifiusage/>
+- DMG：<https://xjp.one/wifiusage/downloads/WiFiUsage-1.0-free.dmg>
 
-Wi‑Fi 名称权限不会被用于读取、保存或上传地理位置。本仓库不包含维护者的签名配置，自行构建时请按照 Xcode 提示选择自己的开发签名。
+```text
+文件：WiFiUsage-1.0-free.dmg
+SHA-256：86e6140c01029c81dbd5699b9b57ba3f9b6af20e38aab0c3da6936ed13e366e2
+```
+
+1. 打开 DMG，将 `WiFiUsage.app` 拖入“应用程序”。
+2. 当前版本使用不包含开发者身份的匿名 ad-hoc 签名，尚未经过 Apple 公证。如果 macOS 首次阻止启动，请在“应用程序”中右键 WiFiUsage，选择“打开”；若仍被阻止，再到“系统设置”→“隐私与安全性”点“仍要打开”。
+3. 打开后会自动识别当前 Wi‑Fi，无需授予定位权限。
+
+也可以下载本 Release 的 Source code（ZIP 或 TAR.GZ），按照仓库 README 从源码构建。
+
+Wi‑Fi 名称权限不会被用于读取、保存或上传地理位置。
 
 ## 已知限制
 
@@ -37,4 +47,4 @@ Wi‑Fi 名称权限不会被用于读取、保存或上传地理位置。本仓
 - 应用流量属于本地估算，短连接、VPN、代理和系统服务可能无法完整识别。
 - 应用排行暂不支持按 Wi‑Fi 拆分。
 - 套餐费用仅供参考，不代表运营商账单。
-- 本版本不提供预编译安装包，需要使用 Xcode 从源码构建。
+- 当前 DMG 尚未经过 Apple 公证，首次打开可能需要右键应用并选择“打开”。

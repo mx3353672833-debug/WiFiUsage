@@ -6,7 +6,9 @@ final class ApplicationDelegate: NSObject, NSApplicationDelegate {
     private var isPreparingToTerminate = false
 
     func applicationDidBecomeActive(_ notification: Notification) {
-        model?.refreshWiFiStatus()
+        Task { [weak self] in
+            await self?.model?.refreshWiFiStatus()
+        }
     }
 
     func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {

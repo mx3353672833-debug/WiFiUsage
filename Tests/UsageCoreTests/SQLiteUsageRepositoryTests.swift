@@ -306,14 +306,16 @@ final class SQLiteUsageRepositoryTests: XCTestCase {
 
         XCTAssertEqual(homeOnEn0.networkID, homeAfterInterfaceChange.networkID)
         XCTAssertEqual(homeOnEn0.networkID, "ssid:v1:486f6d657c3547")
+        let spacedHomeID = WiFiNetworkIdentifier.make(interfaceName: "en0", ssid: " Home|5G ")
+        XCTAssertEqual(spacedHomeID, homeOnEn0.networkID)
         XCTAssertEqual(
             Set([
                 homeOnEn0.networkID,
                 WiFiNetworkIdentifier.make(interfaceName: "en0", ssid: "home|5g"),
-                WiFiNetworkIdentifier.make(interfaceName: "en0", ssid: " Home|5G "),
+                spacedHomeID,
                 WiFiNetworkIdentifier.make(interfaceName: "en0", ssid: "家庭网络📶")
             ]).count,
-            4
+            3
         )
     }
 

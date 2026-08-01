@@ -59,7 +59,7 @@ public struct WiFiNetworkIdentity: Codable, Hashable, Sendable {
     public init(interfaceName: String, interfaceIndex: UInt32, ssid: String? = nil) {
         self.interfaceName = interfaceName
         self.interfaceIndex = interfaceIndex
-        self.ssid = ssid
+        self.ssid = WiFiNetworkName.normalize(ssid)
     }
 
     public var networkID: String {
@@ -69,7 +69,7 @@ public struct WiFiNetworkIdentity: Codable, Hashable, Sendable {
 
 public enum WiFiNetworkIdentifier {
     public static func make(interfaceName: String, ssid: String?) -> String {
-        if let ssid, !ssid.isEmpty {
+        if let ssid = WiFiNetworkName.normalize(ssid) {
             return "ssid:v1:\(hexEncoded(ssid))"
         }
         return "unidentified:v1:\(hexEncoded(interfaceName))"
@@ -95,7 +95,7 @@ public struct KnownWiFiNetwork: Codable, Hashable, Identifiable, Sendable {
         lastSeenAt: Date
     ) {
         self.id = id
-        self.ssid = ssid
+        self.ssid = WiFiNetworkName.normalize(ssid)
         self.interfaceName = interfaceName
         self.firstSeenAt = firstSeenAt
         self.lastSeenAt = lastSeenAt
@@ -112,8 +112,7 @@ public struct KnownWiFiNetwork: Codable, Hashable, Identifiable, Sendable {
     }
 
     public var isIdentified: Bool {
-        guard let ssid else { return false }
-        return !ssid.isEmpty
+        WiFiNetworkName.normalize(ssid) != nil
     }
 }
 

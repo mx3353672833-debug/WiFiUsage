@@ -99,21 +99,29 @@ struct PlansView: View {
         let networks = model.networkOptions.filter(\.isIdentified)
 
         if networks.isEmpty {
-            switch model.wifiNameAccessState {
-            case .notDetermined:
-                Button("识别 Wi-Fi 名称") {
-                    model.requestSSIDAccess()
-                }
-                .buttonStyle(.bordered)
-            case .authorized:
+            if !model.allowsLocationSSIDAccess || model.wifiNameAccessState == .notRequired {
                 Label("连接 Wi-Fi 后可绑定", systemImage: "wifi.slash")
                     .font(.caption)
                     .foregroundStyle(.secondary)
-            case .locationServicesDisabled, .restricted, .denied:
-                Button("打开系统设置") {
-                    model.openWiFiNameSettings()
+            } else {
+                switch model.wifiNameAccessState {
+                case .notDetermined:
+                    Button("识别 Wi-Fi 名称") {
+                        model.requestSSIDAccess()
+                    }
+                    .buttonStyle(.bordered)
+                case .authorized:
+                    Label("连接 Wi-Fi 后可绑定", systemImage: "wifi.slash")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                case .locationServicesDisabled, .restricted, .denied:
+                    Button("打开系统设置") {
+                        model.openWiFiNameSettings()
+                    }
+                    .buttonStyle(.bordered)
+                case .notRequired:
+                    EmptyView()
                 }
-                .buttonStyle(.bordered)
             }
         } else {
             Menu {
@@ -222,7 +230,11 @@ private struct PlanFormView: View {
 
                 Section("用于哪些 Wi-Fi") {
                     if identifiedNetworks.isEmpty {
-                        Text("允许识别 Wi-Fi 名称后，可以在这里选择。")
+                        Text(
+                            model.allowsLocationSSIDAccess
+                                ? "允许识别 Wi-Fi 名称后，可以在这里选择。"
+                                : "连接 Wi-Fi 并等待自动识别后，可以在这里选择。"
+                        )
                             .foregroundStyle(.secondary)
                     } else {
                         ForEach(identifiedNetworks) { network in
