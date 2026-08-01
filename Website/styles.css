@@ -468,8 +468,8 @@ p { text-wrap: pretty; }
 .network-ledger i { width: 8px; height: 8px; border: 2px solid var(--teal); border-radius: 50%; }
 .network-ledger b { color: var(--ink-faint); font: 500 10px/1 "SFMono-Regular", Menlo, monospace; }
 
-.app-symbol { grid-template-columns: repeat(2, 17px); grid-template-rows: repeat(2, 17px); gap: 6px; color: var(--violet); }
-.app-symbol span { border: 2px solid currentColor; border-radius: 5px; }
+.app-symbol { grid-template-columns: repeat(2, 18px); grid-template-rows: repeat(2, 18px); gap: 7px; place-content: center; place-items: stretch; color: var(--violet); }
+.app-symbol span { width: 18px; height: 18px; box-sizing: border-box; border: 2px solid currentColor; border-radius: 5px; }
 .app-symbol span:nth-child(2), .app-symbol span:nth-child(3) { opacity: .42; }
 .app-flow { display: grid; gap: 16px; }
 .app-flow > div { display: grid; grid-template-columns: 70px 1fr; gap: 14px; align-items: center; color: var(--ink-soft); font-size: 12px; }
