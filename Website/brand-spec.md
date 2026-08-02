@@ -4,30 +4,25 @@
 
 - Display name: 流量账本
 - Technical name: WiFiUsage
-- Version: 1.0 (build 1)
-- Bundle ID: `one.xjp.WiFiUsage`
+- Version: 1.1.0 (build 2)
 - Platform: macOS 14 or later
 - Architectures: Universal binary (`arm64` + `x86_64`)
 - Price: free
 - Website: `https://xjp.one/wifiusage/`
-- Source: repository root
 
 ## Distribution
 
-- File: `WiFiUsage-1.0-free.dmg`
-- Size: 2,108,552 bytes (display as 2.1 MB)
-- SHA-256: `86e6140c01029c81dbd5699b9b57ba3f9b6af20e38aab0c3da6936ed13e366e2`
-- `hdiutil verify`: valid
-- Signature: anonymous ad-hoc (`Signature=adhoc`, `TeamIdentifier=not set`)
-- Hardened runtime: enabled
-- Notarization: no stapled ticket; website must explain first-launch right-click Open flow
+- File: `WiFiUsage-1.1.0-free.dmg`
+- Size: `2406265` bytes (display as `2.4 MB`)
+- SHA-256: `aad32b364b5418948b34570adf1fd6cfadd874a740eb6d0b53d8aa2a0ab031b5`
+- Integrity must be verified against the final public artifact before deployment
 
-Recalculate file size and SHA-256 before every deployment. Website, release notes, and server copy must match final artifact.
+Recalculate file size and SHA-256 before every deployment. Website, release notes, and public download copy must match the final artifact.
 
-## Real assets
+## Visual assets
 
-- App icon source: `../Config/Assets.xcassets/AppIcon.appiconset/AppIcon-512@2x.png`
-- Website icon copy: `assets/app-icon.png`
+- Use the current shipping app icon.
+- Do not add real screenshots, stock photography, or fabricated product imagery.
 
 ## Product capabilities
 
@@ -40,14 +35,21 @@ Recalculate file size and SHA-256 before every deployment. Website, release note
 - Menu bar summary
 - User-level launch at login
 - Local SQLite storage with a default 400-day retention window
+- Local desensitized diagnostic logs, retained for up to 7 days and capped at 5 MiB
+- In-app feedback with a previewable, separately selected diagnostic attachment
 
 ## Privacy facts
 
 - No account
 - No administrator permission
 - No driver, Network Extension, or System Extension
-- No telemetry, advertising, cloud sync, or remote upload
-- Database: `~/Library/Application Support/WiFiUsage/usage.sqlite`
+- No automatic telemetry, advertising, or cloud sync
+- Traffic, plan, and settings data remain local
+- Diagnostic logs remain local unless the user explicitly selects an attachment and sends feedback; there is no automatic upload
+- Every in-app feedback submission sends the problem description, software version and build, macOS version, and architecture
+- Contact details and the desensitized diagnostic attachment are separate explicit choices
+- An attached diagnostic report contains feature state and error codes; it excludes Wi-Fi names, application names, file paths, traffic records, plan contents, and contact details
+- The local database and diagnostic logs stay in the app's user-scoped data area
 - The public build identifies the current Wi-Fi from the local network summary without requesting location permission; geographic location is not read, saved, or uploaded
 
 ## Required limitations
@@ -69,7 +71,9 @@ Allowed:
 - 物理 Wi-Fi 总用量
 - 应用用量估算
 - 套餐费用估算
-- 数据仅保存在本机
+- 流量、套餐和设置数据仅保存在本机
+- 诊断日志不会自动上传
+- 联系方式和脱敏诊断日志均由用户分别选择
 - 免费
 - 无需账号
 
@@ -81,6 +85,8 @@ Forbidden:
 - 与运营商账单完全一致
 - 银行级安全
 - 零性能影响
+- 所有数据绝不离开本机
+- 完全匿名的反馈
 - Fabricated user counts, download counts, ratings, testimonials, awards, or media logos
 
 ## Design system
@@ -99,6 +105,6 @@ Direction: macOS network instrument — editorial light layout with one dark liv
 - Body: Apple SF / PingFang SC
 - Utility: SF Mono / Menlo
 - Motion: one coordinated hero instrument sequence plus restrained section reveals and a scroll-progress signal; never animate every small control independently
-- Signature: animated circular upload/download meter derived from the app's traffic language
+- Visual motif: animated circular upload/download meter derived from the app's traffic language
 
 Avoid generic SaaS feature-card walls, decorative numbering, hero screenshots, bright gradients, colored glow, stock photos, emoji decoration, and fake product imagery.

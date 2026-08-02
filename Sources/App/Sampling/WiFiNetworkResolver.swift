@@ -13,14 +13,32 @@ public enum WiFiNameAccessState: String, Equatable, Sendable {
     case authorized
 }
 
+public struct WiFiResolutionDiagnostic: Equatable, Sendable {
+    public enum Source: String, Sendable {
+        case none
+        case coreWLAN = "corewlan"
+        case ipconfig
+    }
+
+    public let connected: Bool
+    public let wifiNameIdentified: Bool
+    public let source: Source
+}
+
 public protocol WiFiNetworkResolving: AnyObject, Sendable {
     typealias WiFiNameAccessStateHandler = @MainActor @Sendable (WiFiNameAccessState) -> Void
+    typealias DiagnosticHandler = @Sendable (WiFiResolutionDiagnostic) async -> Void
 
     var wifiNameAccessState: WiFiNameAccessState { get }
     var onWiFiNameAccessStateChange: WiFiNameAccessStateHandler? { get set }
     func requestSSIDAuthorization()
     func refreshWiFiNameAccessState()
     func currentNetwork() async -> WiFiNetworkIdentity?
+    func setDiagnosticHandler(_ handler: DiagnosticHandler?)
+}
+
+public extension WiFiNetworkResolving {
+    func setDiagnosticHandler(_ handler: DiagnosticHandler?) {}
 }
 
 public final class WiFiNetworkResolver: WiFiNetworkResolving, @unchecked Sendable {
@@ -29,6 +47,8 @@ public final class WiFiNetworkResolver: WiFiNetworkResolving, @unchecked Sendabl
     private let locationAuthorization: LocationSSIDAuthorization?
     private let stateHandlerLock = NSLock()
     private var stateHandler: WiFiNameAccessStateHandler?
+    private let diagnosticHandlerLock = NSLock()
+    private var diagnosticHandler: DiagnosticHandler?
 
     public init(
         runtimeConfiguration: AppRuntimeConfiguration = .current,
@@ -73,23 +93,54 @@ public final class WiFiNetworkResolver: WiFiNetworkResolving, @unchecked Sendabl
         publishWiFiNameAccessState(wifiNameAccessState)
     }
 
+    public func setDiagnosticHandler(_ handler: DiagnosticHandler?) {
+        diagnosticHandlerLock.lock()
+        diagnosticHandler = handler
+        diagnosticHandlerLock.unlock()
+    }
+
     public func currentNetwork() async -> WiFiNetworkIdentity? {
         let candidates = candidateInterfaces()
-        guard !candidates.isEmpty else { return nil }
+        guard !candidates.isEmpty else {
+            await publishDiagnostic(WiFiResolutionDiagnostic(
+                connected: false,
+                wifiNameIdentified: false,
+                source: .none
+            ))
+            return nil
+        }
 
         if let participating = preferredParticipatingInterface(in: candidates) {
             let name = participating.name
             let coreWLANSSID = WiFiNetworkName.normalize(participating.interface?.ssid())
             if let coreWLANSSID {
-                return Self.identity(name: name, ssid: coreWLANSSID)
+                let identity = Self.identity(name: name, ssid: coreWLANSSID)
+                await publishDiagnostic(WiFiResolutionDiagnostic(
+                    connected: identity != nil,
+                    wifiNameIdentified: identity?.ssid != nil,
+                    source: .coreWLAN
+                ))
+                return identity
             }
             guard let fallback = await ssidProvider.summary(for: name),
                   !Task.isCancelled,
                   fallback.isWiFi,
                   fallback.isLinkActive else {
-                return Self.identity(name: name, ssid: nil)
+                let identity = Self.identity(name: name, ssid: nil)
+                await publishDiagnostic(WiFiResolutionDiagnostic(
+                    connected: identity != nil,
+                    wifiNameIdentified: false,
+                    source: .ipconfig
+                ))
+                return identity
             }
-            return Self.identity(name: name, ssid: fallback.ssid)
+            let identity = Self.identity(name: name, ssid: fallback.ssid)
+            await publishDiagnostic(WiFiResolutionDiagnostic(
+                connected: identity != nil,
+                wifiNameIdentified: identity?.ssid != nil,
+                source: .ipconfig
+            ))
+            return identity
         }
 
         for candidate in candidates {
@@ -100,8 +151,19 @@ public final class WiFiNetworkResolver: WiFiNetworkResolving, @unchecked Sendabl
                 continue
             }
             guard !Task.isCancelled else { return nil }
-            return Self.identity(name: candidate.name, ssid: summary.ssid)
+            let identity = Self.identity(name: candidate.name, ssid: summary.ssid)
+            await publishDiagnostic(WiFiResolutionDiagnostic(
+                connected: identity != nil,
+                wifiNameIdentified: identity?.ssid != nil,
+                source: .ipconfig
+            ))
+            return identity
         }
+        await publishDiagnostic(WiFiResolutionDiagnostic(
+            connected: false,
+            wifiNameIdentified: false,
+            source: .ipconfig
+        ))
         return nil
     }
 
@@ -164,6 +226,18 @@ public final class WiFiNetworkResolver: WiFiNetworkResolving, @unchecked Sendabl
         stateHandlerLock.unlock()
         guard let handler else { return }
         Task { @MainActor in handler(state) }
+    }
+
+    private func publishDiagnostic(_ diagnostic: WiFiResolutionDiagnostic) async {
+        let handler = diagnosticHandlerSnapshot()
+        await handler?(diagnostic)
+    }
+
+    private func diagnosticHandlerSnapshot() -> DiagnosticHandler? {
+        diagnosticHandlerLock.lock()
+        defer { diagnosticHandlerLock.unlock() }
+        let handler = diagnosticHandler
+        return handler
     }
 }
 

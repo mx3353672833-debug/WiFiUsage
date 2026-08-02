@@ -32,7 +32,7 @@ STAGE_ROOT="$WORK_ROOT/stage"
 OUTPUT_DIR="$DIST_ROOT/$VARIANT"
 OUTPUT_APP="$OUTPUT_DIR/$APP_NAME"
 INSTRUCTIONS="$PROJECT_ROOT/Packaging/Public/安装说明.txt"
-DMG_PATH="$DIST_ROOT/WiFiUsage-1.0-public-free.dmg"
+DMG_PATH="$DIST_ROOT/WiFiUsage-1.1.0-public-free.dmg"
 
 assert_safe_path() {
   local path=$1
@@ -137,7 +137,7 @@ if [[ "$VARIANT" == PublicRelease ]]; then
   ln -s /Applications "$DMG_STAGE/Applications"
 
   printf 'Creating %s...\n' "$(basename "$DMG_PATH")"
-  hdiutil create -volname 'WiFiUsage 1.0 Public Free' -srcfolder "$DMG_STAGE" -format UDZO -ov "$DMG_PATH"
+  hdiutil create -volname 'WiFiUsage 1.1.0 Public Free' -srcfolder "$DMG_STAGE" -format UDZO -ov "$DMG_PATH"
 fi
 
 printf 'Built app: %s\n' "$OUTPUT_APP"

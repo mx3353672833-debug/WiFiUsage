@@ -137,6 +137,9 @@ public final class AppModel {
     @ObservationIgnored private let networkResolver: any WiFiNetworkResolving
     @ObservationIgnored private let launchAtLoginManager: any LaunchAtLoginManaging
     @ObservationIgnored private let preferences: UserDefaults
+    @ObservationIgnored private let diagnosticLog: DiagnosticLogStore
+    @ObservationIgnored private let feedbackClient: AppFeedbackClient
+    @ObservationIgnored private let feedbackProfile: FeedbackSystemProfile
     @ObservationIgnored private var registeredCurrentNetworkID: String?
     @ObservationIgnored private var didInitializeNetworkSelection = false
     @ObservationIgnored private var lastIdentifiedCurrentNetworkID: String?
@@ -172,6 +175,9 @@ public final class AppModel {
         networkResolver: (any WiFiNetworkResolving)? = nil,
         launchAtLoginManager: any LaunchAtLoginManaging = LaunchAtLoginManager(),
         preferences: UserDefaults = .standard,
+        diagnosticLog: DiagnosticLogStore? = nil,
+        feedbackClient: AppFeedbackClient = AppFeedbackClient(),
+        feedbackProfile: FeedbackSystemProfile = .current(),
         automaticallyBootstraps: Bool = true
     ) {
         self.runtimeConfiguration = runtimeConfiguration
@@ -179,6 +185,13 @@ public final class AppModel {
             ?? WiFiNetworkResolver(runtimeConfiguration: runtimeConfiguration)
         self.launchAtLoginManager = launchAtLoginManager
         self.preferences = preferences
+        self.diagnosticLog = diagnosticLog ?? DiagnosticLogStore(
+            directoryURL: DiagnosticLogStore.defaultDirectory(
+                applicationSupportDirectoryName: runtimeConfiguration.applicationSupportDirectoryName
+            )
+        )
+        self.feedbackClient = feedbackClient
+        self.feedbackProfile = feedbackProfile
         wifiNameAccessState = runtimeConfiguration.allowsLocationSSIDAccess
             ? self.networkResolver.wifiNameAccessState
             : .notRequired
@@ -190,6 +203,25 @@ public final class AppModel {
             Task { [weak self] in
                 await self?.refreshWiFiStatus()
             }
+        }
+        let diagnosticLog = self.diagnosticLog
+        self.networkResolver.setDiagnosticHandler { diagnostic in
+            let source: DiagnosticWiFiResolutionSource = switch diagnostic.source {
+            case .none: .none
+            case .coreWLAN: .coreWLAN
+            case .ipconfig: .ipconfig
+            }
+            await diagnosticLog.record(
+                .wifiResolutionChanged,
+                metadata: DiagnosticEventMetadata(
+                    connected: diagnostic.connected,
+                    wifiNameIdentified: diagnostic.wifiNameIdentified,
+                    wifiResolutionSource: source
+                )
+            )
+        }
+        Task {
+            await diagnosticLog.record(.appLaunch)
         }
         if automaticallyBootstraps {
             Task { [weak self] in
@@ -522,6 +554,7 @@ public final class AppModel {
             let repository = try SQLiteUsageRepository(url: databaseURL)
             self.repository = repository
             repositoryReady = true
+            await diagnosticLog.record(.databaseOpenSucceeded)
             if runtimeConfiguration.allowsLegacyDatabaseImport {
                 await importLegacyDatabaseIfPresent(using: repository)
             }
@@ -540,7 +573,7 @@ public final class AppModel {
         } catch {
             repositoryReady = false
             errorMessage = "本地数据暂时无法读取，请重新打开应用后再试。"
-            NSLog("WiFiUsage bootstrap failed: %@", error.localizedDescription)
+            await recordFailure(.databaseOpenFailed, error: error)
             refreshLaunchAtLogin()
         }
     }
@@ -583,29 +616,49 @@ public final class AppModel {
             errorMessage = nil
         } catch {
             errorMessage = "数据暂时无法刷新，请稍后再试。"
-            NSLog("WiFiUsage refresh failed: %@", error.localizedDescription)
+            await recordFailure(.dataRefreshFailed, error: error)
         }
     }
 
     public func startSampling() async {
         guard !isSampling, let repository else { return }
         do {
-            let sampler = try PhysicalWiFiSampler(networkResolver: networkResolver) { [weak self] sample in
-                try await repository.save(physicalSample: sample)
-                await MainActor.run {
-                    guard let self else { return }
-                    self.lastUpdated = sample.endedAt
-                    if sample.endedAt >= self.interval.start {
-                        self.physicalSamples.append(sample)
+            let samplerDiagnosticLog = diagnosticLog
+            let sampler = try PhysicalWiFiSampler(
+                networkResolver: networkResolver,
+                failureHandler: { failure in
+                    let domain: DiagnosticErrorDomain = switch failure.domain {
+                    case .interfaceCounters: .interfaceCounters
+                    case .sqlite: .sqlite
+                    case .unknown: .unknown
+                    }
+                    await samplerDiagnosticLog.record(
+                        .physicalSamplerFailed,
+                        level: .error,
+                        metadata: DiagnosticEventMetadata(
+                            errorDomain: domain,
+                            numericCode: failure.numericCode
+                        )
+                    )
+                },
+                sampleHandler: { [weak self] sample in
+                    try await repository.save(physicalSample: sample)
+                    await MainActor.run {
+                        guard let self else { return }
+                        self.lastUpdated = sample.endedAt
+                        if sample.endedAt >= self.interval.start {
+                            self.physicalSamples.append(sample)
+                        }
                     }
                 }
-            }
+            )
             self.sampler = sampler
             isSampling = true
             await sampler.start()
+            await diagnosticLog.record(.physicalSamplerStarted)
         } catch {
             errorMessage = "Wi-Fi 用量暂时无法记录，请稍后再试。"
-            NSLog("WiFiUsage physical sampling failed: %@", error.localizedDescription)
+            await recordFailure(.physicalSamplerFailed, error: error)
         }
     }
 
@@ -658,7 +711,7 @@ public final class AppModel {
             return true
         } catch {
             errorMessage = "套餐设置暂时无法保存，请稍后再试。"
-            NSLog("WiFiUsage plan assignment failed: %@", error.localizedDescription)
+            await recordFailure(.planAssignmentFailed, error: error)
             return false
         }
     }
@@ -697,7 +750,7 @@ public final class AppModel {
             return true
         } catch {
             errorMessage = "套餐暂时无法保存，请稍后再试。"
-            NSLog("WiFiUsage save plan failed: %@", error.localizedDescription)
+            await recordFailure(.planSaveFailed, error: error)
             return false
         }
     }
@@ -713,6 +766,8 @@ public final class AppModel {
         applicationSamplingError = nil
 
         if applicationSampler == nil {
+            let samplerDiagnosticLog = diagnosticLog
+            let preciseMode = applicationSamplingMode == .precise
             applicationSampler = ProcessNetworkSampler(
                 mode: applicationSamplingMode,
                 deltaHandler: { [weak self] deltas in
@@ -720,6 +775,18 @@ public final class AppModel {
                     await self.recordApplicationDeltas(deltas)
                 },
                 stateHandler: { [weak self] state in
+                    let event: DiagnosticEventCode? = switch state {
+                    case .starting: .applicationSamplerStarted
+                    case .running: .applicationSamplerRunning
+                    case .stopped: .applicationSamplerStopped
+                    case .failed: nil
+                    }
+                    if let event {
+                        await samplerDiagnosticLog.record(
+                            event,
+                            metadata: DiagnosticEventMetadata(preciseMode: preciseMode)
+                        )
+                    }
                     await MainActor.run {
                         self?.applicationSamplingState = state
                         if case .failed(let message) = state {
@@ -728,6 +795,25 @@ public final class AppModel {
                             self?.applicationSamplingError = nil
                         }
                     }
+                },
+                failureHandler: { failure in
+                    let kind: DiagnosticApplicationFailureKind = switch failure.kind {
+                    case .unavailable: .unavailable
+                    case .commandFailed: .commandFailed
+                    case .incompleteOutput: .incompleteOutput
+                    case .unknown: .unknown
+                    }
+                    await samplerDiagnosticLog.record(
+                        .applicationSamplerFailed,
+                        level: .error,
+                        metadata: DiagnosticEventMetadata(
+                            errorDomain: .processSampler,
+                            numericCode: failure.numericCode,
+                            retryCount: failure.retryCount,
+                            applicationFailureKind: kind,
+                            preciseMode: preciseMode
+                        )
+                    )
                 }
             )
         }
@@ -812,7 +898,7 @@ public final class AppModel {
             errorMessage = nil
         } catch {
             errorMessage = "登录时启动设置未能更新，请稍后重试。"
-            NSLog("WiFiUsage launch-at-login update failed: %@", error.localizedDescription)
+            await recordFailure(.loginItemUpdateFailed, error: error)
         }
     }
 
@@ -826,6 +912,67 @@ public final class AppModel {
 
     public func openApplicationsFolder() {
         NSWorkspace.shared.open(URL(fileURLWithPath: "/Applications", isDirectory: true))
+    }
+
+    public func revealDiagnosticLogs() {
+        let directoryURL = diagnosticLog.directoryURL
+        Task { [diagnosticLog] in
+            await diagnosticLog.ensureDirectory()
+            await MainActor.run {
+                _ = NSWorkspace.shared.open(directoryURL)
+            }
+        }
+    }
+
+    public func clearDiagnosticLogs() async {
+        await diagnosticLog.clear()
+    }
+
+    public func prepareFeedbackDiagnostics() async -> FeedbackDiagnosticAttachment {
+        let generatedAt = Date()
+        let content = await diagnosticLog.export(
+            context: diagnosticReportContext,
+            generatedAt: generatedAt
+        )
+        return FeedbackDiagnosticAttachment(generatedAt: generatedAt, content: content)
+    }
+
+    public func submitFeedback(
+        reportID: UUID,
+        type: FeedbackType,
+        message: String,
+        wantsReply: Bool,
+        contact: String,
+        diagnostics: FeedbackDiagnosticAttachment?
+    ) async throws -> FeedbackReceipt {
+        let includesDiagnostics = diagnostics != nil
+        await diagnosticLog.record(
+            .feedbackSendStarted,
+            metadata: DiagnosticEventMetadata(diagnosticsIncluded: includesDiagnostics)
+        )
+        let submission = FeedbackSubmission(
+            reportID: reportID,
+            type: type,
+            message: message,
+            wantsReply: wantsReply,
+            contact: contact,
+            system: feedbackProfile.system,
+            device: feedbackProfile.device,
+            appVersion: feedbackProfile.appVersion,
+            appBuild: feedbackProfile.appBuild,
+            diagnostics: diagnostics
+        )
+        do {
+            let receipt = try await feedbackClient.submit(submission)
+            await diagnosticLog.record(
+                .feedbackSendSucceeded,
+                metadata: DiagnosticEventMetadata(diagnosticsIncluded: includesDiagnostics)
+            )
+            return receipt
+        } catch {
+            await recordFeedbackFailure(error, diagnosticsIncluded: includesDiagnostics)
+            throw error
+        }
     }
 
     public func refreshWiFiStatus() async {
@@ -879,7 +1026,7 @@ public final class AppModel {
         do {
             try await repository.save(wifiNetwork: observedNetwork)
         } catch {
-            NSLog("WiFiUsage could not save the current Wi-Fi: %@", error.localizedDescription)
+            await recordFailure(.databaseWriteFailed, error: error)
             if registeredCurrentNetworkID == observedNetwork.id {
                 registeredCurrentNetworkID = nil
             }
@@ -1027,7 +1174,7 @@ public final class AppModel {
                 mergePendingUsage(identifier: identifier, usage: usage)
             }
             applicationSamplingError = "应用用量暂时无法保存，稍后会自动重试。"
-            NSLog("WiFiUsage application usage save failed: %@", error.localizedDescription)
+            await recordFailure(.applicationUsageSaveFailed, error: error)
         }
         applicationDataRevision &+= 1
     }
@@ -1158,11 +1305,112 @@ public final class AppModel {
             _ = try await repository.importLegacyDatabase(at: sourceURL)
         } catch {
             // No marker is written on failure, so the next launch retries safely.
-            NSLog(
-                "Legacy WiFiUsage database migration failed: %@",
-                error.localizedDescription
+            await recordFailure(.legacyImportFailed, error: error)
+        }
+    }
+
+    private var diagnosticReportContext: DiagnosticReportContext {
+        let wifiState: DiagnosticWiFiState
+        if currentWiFiNetwork == nil {
+            wifiState = .disconnected
+        } else if currentSSID == nil {
+            wifiState = .connectedWithoutName
+        } else {
+            wifiState = .identified
+        }
+        let applicationState: String = switch applicationSamplingState {
+        case .stopped: "stopped"
+        case .starting: "starting"
+        case .running: "running"
+        case .failed: "failed"
+        }
+        return DiagnosticReportContext(
+            appVersion: feedbackProfile.appVersion,
+            appBuild: feedbackProfile.appBuild,
+            distribution: runtimeConfiguration.distributionVariant.rawValue,
+            operatingSystemVersion: feedbackProfile.system,
+            architecture: feedbackProfile.device,
+            repositoryReady: repositoryReady,
+            wifiState: wifiState,
+            physicalSamplingActive: isSampling,
+            applicationSamplingState: applicationState
+        )
+    }
+
+    private func recordFailure(_ event: DiagnosticEventCode, error: Error) async {
+        let metadata = diagnosticMetadata(for: error)
+        await diagnosticLog.record(event, level: .error, metadata: metadata)
+    }
+
+    private func recordFeedbackFailure(
+        _ error: Error,
+        diagnosticsIncluded: Bool
+    ) async {
+        var metadata = DiagnosticEventMetadata(
+            errorDomain: .feedbackNetwork,
+            diagnosticsIncluded: diagnosticsIncluded
+        )
+        if let feedbackError = error as? FeedbackSubmissionError {
+            switch feedbackError {
+            case .invalidRequest:
+                metadata.numericCode = 400
+                metadata.httpStatusClass = 4
+            case .requestTooLarge:
+                metadata.numericCode = 413
+                metadata.httpStatusClass = 4
+            case .noConnection:
+                metadata.numericCode = -1009
+            case .timedOut:
+                metadata.numericCode = -1001
+            case .rejected(let statusCode, _, _):
+                metadata.numericCode = Int64(statusCode)
+                metadata.httpStatusClass = statusCode / 100
+            case .invalidResponse:
+                metadata.numericCode = -1
+            }
+        }
+        await diagnosticLog.record(.feedbackSendFailed, level: .error, metadata: metadata)
+    }
+
+    private func diagnosticMetadata(for error: Error) -> DiagnosticEventMetadata {
+        if let sqliteError = error as? SQLiteUsageRepositoryError {
+            return DiagnosticEventMetadata(
+                errorDomain: .sqlite,
+                numericCode: Int64(sqliteError.code)
             )
         }
+        if let counterError = error as? SystemInterfaceCounterError {
+            switch counterError {
+            case .systemCall(let code):
+                return DiagnosticEventMetadata(
+                    errorDomain: .interfaceCounters,
+                    numericCode: Int64(code)
+                )
+            case .unstableSnapshot:
+                return DiagnosticEventMetadata(errorDomain: .interfaceCounters)
+            }
+        }
+        if let launchError = error as? LaunchAtLoginError {
+            let code: Int64 = switch launchError {
+            case .unstableApplicationLocation: 1
+            case .invalidBundleIdentifier: 2
+            case .invalidPropertyList: 3
+            }
+            return DiagnosticEventMetadata(
+                errorDomain: .launchAtLogin,
+                numericCode: code
+            )
+        }
+        if let cocoaError = error as? CocoaError {
+            return DiagnosticEventMetadata(
+                errorDomain: .filesystem,
+                numericCode: Int64(cocoaError.errorCode)
+            )
+        }
+        return DiagnosticEventMetadata(
+            errorDomain: .unknown,
+            numericCode: Int64((error as NSError).code)
+        )
     }
 
     private func metadata(for identifier: String) -> ApplicationMetadata {

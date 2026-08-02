@@ -27,9 +27,9 @@
     "alternateName": "WiFiUsage",
     "applicationCategory": "UtilitiesApplication",
     "operatingSystem": "macOS 14 or later",
-    "softwareVersion": "1.0",
+    "softwareVersion": "1.1.0",
     "isAccessibleForFree": true,
-    "downloadUrl": "https://xjp.one/wifiusage/downloads/WiFiUsage-1.0-free.dmg",
+    "downloadUrl": "https://xjp.one/wifiusage/downloads/WiFiUsage-1.1.0-free.dmg",
     "url": "https://xjp.one/wifiusage/",
     "image": "https://xjp.one/wifiusage/assets/app-icon.png",
     "description": "本地优先的 macOS Wi-Fi 流量统计工具，按网络记录物理流量并估算应用用量与套餐费用。"
@@ -58,10 +58,10 @@
 
           <p class="overline enter delay-1">你的 Wi‑Fi，用到哪里去了？</p>
           <h1 id="hero-title" class="enter delay-1">把 Wi‑Fi 流量，<br><em>记成一本账。</em></h1>
-          <p class="hero-intro enter delay-2">分别记录每个 Wi‑Fi 的下载、上传和套餐费用。应用用量在本机估算，所有记录只留在你的 Mac。</p>
+          <p class="hero-intro enter delay-2">分别记录每个 Wi‑Fi 的下载、上传和套餐费用。应用用量在本机估算，流量、套餐和设置记录只留在你的 Mac。</p>
 
           <div class="hero-actions enter delay-3">
-            <a class="button button-dark" href="/wifiusage/downloads/WiFiUsage-1.0-free.dmg" download>下载免费版</a>
+            <a class="button button-dark" href="/wifiusage/downloads/WiFiUsage-1.1.0-free.dmg" download>下载免费版</a>
             <a class="text-link github-link" href="https://github.com/mx3353672833-debug/WiFiUsage" target="_blank" rel="noopener noreferrer">去 GitHub 点个 Star</a>
           </div>
 
@@ -136,7 +136,7 @@
         <p>不注册账号</p>
         <p>不上传流量</p>
         <p>不安装驱动</p>
-        <p>不收集遥测</p>
+        <p>无自动遥测</p>
       </div>
     </section>
 
@@ -204,11 +204,12 @@
         <div class="privacy-copy">
           <p class="section-tag">数据归你</p>
           <h2 id="privacy-title">流量记录不出这台 Mac。</h2>
-          <p class="privacy-lead">没有账号、云端或遥测。应用只在本机读取系统计数，并把数据写入本地 SQLite。</p>
+          <p class="privacy-lead">没有账号、广告、云端同步或自动遥测。流量、套餐和设置写入本地 SQLite；脱敏诊断日志也先保存在本机，不会自动上传。</p>
           <ul>
             <li><span>01</span><div><strong>无需管理员权限</strong><p>不安装驱动、Network Extension 或 System Extension。</p></div></li>
             <li><span>02</span><div><strong>公共版不申请定位权限</strong><p>只读取本机网络摘要识别当前 Wi‑Fi，不读取、保存或上传地理位置。</p></div></li>
             <li><span>03</span><div><strong>数据库由你保管</strong><code>~/Library/Application Support/WiFiUsage/usage.sqlite</code></div></li>
+            <li><span>04</span><div><strong>诊断与反馈由你控制</strong><p>日志在本机保留最近 7 天，合计最多 5 MiB。应用内每次反馈会发送软件版本与 build、macOS 版本和架构；联系方式和脱敏日志须分别明确选择，日志可在发送前预览。</p></div></li>
           </ul>
         </div>
       </div>
@@ -240,9 +241,9 @@
           <p>当前版本尚未经过 Apple 公证，首次打开多一步。</p>
         </div>
         <ol class="install-steps">
-          <li><span>1</span><div><strong>打开 DMG</strong><p>下载约 2.1 MB 的安装镜像。</p></div></li>
+          <li><span>1</span><div><strong>打开 DMG</strong><p>下载约 2.4 MB 的安装镜像。</p></div></li>
           <li><span>2</span><div><strong>拖入应用程序</strong><p>把 WiFiUsage.app 拖到 Applications。</p></div></li>
-          <li><span>3</span><div><strong>首次右键打开</strong><p>此匿名 ad-hoc 版未公证。请在“应用程序”中右键 WiFiUsage.app，选择“打开”；若仍被阻止，再到“系统设置”→“隐私与安全性”点“仍要打开”。</p></div></li>
+          <li><span>3</span><div><strong>首次右键打开</strong><p>当前版本尚未经过 Apple 公证。请在“应用程序”中右键 WiFiUsage.app，选择“打开”；若仍被阻止，再到“系统设置”→“隐私与安全性”点“仍要打开”。</p></div></li>
           <li><span>4</span><div><strong>开始记录</strong><p>打开后会自动识别当前 Wi‑Fi，之后即可按网络分别查看用量。</p></div></li>
         </ol>
       </div>
@@ -253,23 +254,23 @@
         <div class="download-main">
           <img src="/wifiusage/assets/app-icon.png" width="88" height="88" alt="" aria-hidden="true">
           <div>
-            <p class="section-tag">WiFiUsage 1.0</p>
+            <p class="section-tag">WiFiUsage 1.1.0 · build 2</p>
             <h2 id="download-title">从今天开始，<br>让流量有迹可循。</h2>
           </div>
-          <a class="button button-dark" href="/wifiusage/downloads/WiFiUsage-1.0-free.dmg" download>下载免费版</a>
+          <a class="button button-dark" href="/wifiusage/downloads/WiFiUsage-1.1.0-free.dmg" download>下载免费版</a>
         </div>
 
         <dl class="release-meta">
           <div><dt>系统</dt><dd>macOS 14+</dd></div>
           <div><dt>架构</dt><dd>Universal</dd></div>
-          <div><dt>大小</dt><dd>2.1 MB</dd></div>
-          <div><dt>签名</dt><dd>匿名 ad-hoc</dd></div>
+          <div><dt>大小</dt><dd>2.4 MB</dd></div>
+          <div><dt>版本</dt><dd>1.1.0 (2)</dd></div>
           <div><dt>公证</dt><dd>尚未公证</dd></div>
         </dl>
 
         <div class="checksum">
           <span>SHA-256</span>
-          <code>86e6140c01029c81dbd5699b9b57ba3f9b6af20e38aab0c3da6936ed13e366e2</code>
+          <code>aad32b364b5418948b34570adf1fd6cfadd874a740eb6d0b53d8aa2a0ab031b5</code>
         </div>
       </div>
     </section>
@@ -296,9 +297,9 @@
         <div class="feedback-intro">
           <p class="section-tag">问题反馈</p>
           <h2 id="feedback-title">遇到了什么问题，<br>直接告诉我。</h2>
-          <p>反馈会通过本站安全发送，不会公开你的内容。只有你选择“希望收到回复”时，联系方式才会随反馈一起发送。</p>
+          <p>你可以从应用或本站通过加密连接发送反馈。应用内每次提交会发送软件版本与 build、macOS 版本和处理器架构；只有分别选择“希望收到回复”或“附带脱敏诊断日志”时，联系方式或日志才会发送。日志不会自动上传，并可在发送前预览。</p>
           <div class="feedback-route" aria-hidden="true">
-            <span>你的 Mac</span><i></i><span>反馈信号</span><i></i><span>开发者收件箱</span>
+            <span>你的 Mac</span><i></i><span>反馈信号</span><i></i><span>反馈邮箱</span>
           </div>
         </div>
 
@@ -354,7 +355,7 @@
             <a href="https://github.com/mx3353672833-debug/WiFiUsage/issues/new" target="_blank" rel="noopener noreferrer">也可以去 GitHub 提 Issue</a>
           </div>
           <p class="form-status" id="feedback-status" role="status" aria-live="polite"></p>
-          <p class="form-privacy">反馈内容和联系方式仅用于处理本次问题，不会写入流量账本或用于营销。</p>
+          <p class="form-privacy">本站表单发送问题描述及你填写的系统、设备信息；联系方式仅在选择希望回复时发送。内容只用于处理本次问题，不会写入流量账本或用于营销。</p>
         </form>
       </div>
     </section>

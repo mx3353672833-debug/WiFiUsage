@@ -49,10 +49,24 @@ public enum ProcessNetworkSamplerError: LocalizedError, Sendable {
     }
 }
 
+public struct ApplicationSamplerDiagnosticFailure: Equatable, Sendable {
+    public enum Kind: String, Sendable {
+        case unavailable
+        case commandFailed = "command_failed"
+        case incompleteOutput = "incomplete_output"
+        case unknown
+    }
+
+    public let kind: Kind
+    public let numericCode: Int64?
+    public let retryCount: Int
+}
+
 /// Entitlement-free application Wi-Fi sampler with balanced and precise modes.
 public actor ProcessNetworkSampler {
     public typealias DeltaHandler = @Sendable ([ProcessNetworkDelta]) async -> Void
     public typealias StateHandler = @Sendable (ApplicationSamplingState) async -> Void
+    public typealias FailureHandler = @Sendable (ApplicationSamplerDiagnosticFailure) async -> Void
 
     private static let executableURL = URL(fileURLWithPath: "/usr/bin/nettop")
 
@@ -61,6 +75,7 @@ public actor ProcessNetworkSampler {
     private let excludedProcessIdentifier: Int32
     private let deltaHandler: DeltaHandler
     private let stateHandler: StateHandler
+    private let failureHandler: FailureHandler
     private var tracker = ProcessNetworkDeltaTracker()
     private var samplingTask: Task<Void, Never>?
     private var publishedState: ApplicationSamplingState = .stopped
@@ -70,13 +85,15 @@ public actor ProcessNetworkSampler {
         pollingInterval: Duration = .seconds(2),
         excludedProcessIdentifier: Int32 = ProcessInfo.processInfo.processIdentifier,
         deltaHandler: @escaping DeltaHandler,
-        stateHandler: @escaping StateHandler
+        stateHandler: @escaping StateHandler,
+        failureHandler: @escaping FailureHandler = { _ in }
     ) {
         self.mode = mode
         self.pollingInterval = pollingInterval
         self.excludedProcessIdentifier = excludedProcessIdentifier
         self.deltaHandler = deltaHandler
         self.stateHandler = stateHandler
+        self.failureHandler = failureHandler
     }
 
     deinit {
@@ -118,8 +135,12 @@ public actor ProcessNetworkSampler {
             } catch {
                 shouldBackOff = true
                 consecutiveFailures += 1
-                NSLog("WiFiUsage application sampler failed: %@", String(reflecting: error))
-                await publish(.failed(error.localizedDescription))
+                let failure = Self.diagnosticFailure(
+                    for: error,
+                    retryCount: consecutiveFailures
+                )
+                await failureHandler(failure)
+                await publish(.failed("应用用量读取遇到问题，正在自动重试。"))
             }
 
             guard shouldBackOff else { continue }
@@ -196,6 +217,38 @@ public actor ProcessNetworkSampler {
         case 3: .seconds(10)
         case 4: .seconds(30)
         default: .seconds(60)
+        }
+    }
+
+    nonisolated static func diagnosticFailure(
+        for error: Error,
+        retryCount: Int
+    ) -> ApplicationSamplerDiagnosticFailure {
+        switch error {
+        case ProcessNetworkSamplerError.nettopUnavailable:
+            ApplicationSamplerDiagnosticFailure(
+                kind: .unavailable,
+                numericCode: nil,
+                retryCount: retryCount
+            )
+        case ProcessNetworkSamplerError.commandFailed(let status, _):
+            ApplicationSamplerDiagnosticFailure(
+                kind: .commandFailed,
+                numericCode: Int64(status),
+                retryCount: retryCount
+            )
+        case ProcessNetworkSamplerError.incompleteOutput:
+            ApplicationSamplerDiagnosticFailure(
+                kind: .incompleteOutput,
+                numericCode: nil,
+                retryCount: retryCount
+            )
+        default:
+            ApplicationSamplerDiagnosticFailure(
+                kind: .unknown,
+                numericCode: nil,
+                retryCount: retryCount
+            )
         }
     }
 

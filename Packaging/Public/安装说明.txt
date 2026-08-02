@@ -1,4 +1,4 @@
-流量账本 1.0 公共免费版安装说明
+流量账本 1.1.0 公共免费版安装说明
 
 1. 打开 DMG，将“WiFiUsage.app”拖到“Applications”文件夹。
 2. 首次启动时，尝试在 Applications 中右键点按“WiFiUsage.app”，选择“打开”。

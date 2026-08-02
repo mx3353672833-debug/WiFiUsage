@@ -13,7 +13,7 @@
   <img src="https://img.shields.io/badge/macOS-14%2B-black?logo=apple" alt="macOS 14+">
   <img src="https://img.shields.io/badge/Swift-6-F05138?logo=swift&logoColor=white" alt="Swift 6">
   <img src="https://img.shields.io/badge/Architecture-Apple%20Silicon%20%7C%20Intel-555" alt="Apple Silicon 和 Intel">
-  <img src="https://img.shields.io/badge/Data-Local%20Only-20B2AA" alt="数据仅保存在本机">
+  <img src="https://img.shields.io/badge/Usage%20Data-Local-20B2AA" alt="流量和套餐数据保存在本机">
 </p>
 
 ![流量账本概览](docs/images/overview.jpg)
@@ -31,26 +31,28 @@
 - 提供低耗能和临时精细统计两种应用统计模式。
 - 通过菜单栏快速查看当前用量和估算费用。
 - 支持登录时自动启动。
-- 不注册账号、不安装驱动，所有数据仅保存在本机。
+- 在本机保留最近 7 天、合计最多 5 MiB 的脱敏诊断日志，可随时查看或清除。
+- 支持应用内反馈；日志不会自动上传，联系方式和脱敏诊断日志均须分别明确选择才会发送。
+- 不注册账号、不安装驱动，流量、套餐和设置数据均保存在本机。
 
 ## 下载与安装
 
 可从官网下载适用于 Apple Silicon 和 Intel Mac 的 Universal DMG：
 
-- [下载流量账本 1.0](https://xjp.one/wifiusage/downloads/WiFiUsage-1.0-free.dmg)
+- [下载流量账本 1.1.0（build 2）](https://xjp.one/wifiusage/downloads/WiFiUsage-1.1.0-free.dmg)
 - [打开产品官网](https://xjp.one/wifiusage/)
 
 安装步骤：
 
 1. 打开 DMG，将 `WiFiUsage.app` 拖入“应用程序”。
-2. 当前版本使用匿名 ad-hoc 签名，尚未经过 Apple 公证。首次启动请在“应用程序”中右键 `WiFiUsage.app`，选择“打开”；若仍被阻止，再到“系统设置”→“隐私与安全性”点“仍要打开”。
+2. 当前版本尚未经过 Apple 公证。首次启动请在“应用程序”中右键 `WiFiUsage.app`，选择“打开”；若仍被阻止，再到“系统设置”→“隐私与安全性”点“仍要打开”。
 3. 首次运行后，在应用设置中允许识别当前 Wi‑Fi 名称。
 
 发布文件：
 
 ```text
-WiFiUsage-1.0-free.dmg
-SHA-256: 86e6140c01029c81dbd5699b9b57ba3f9b6af20e38aab0c3da6936ed13e366e2
+WiFiUsage-1.1.0-free.dmg
+SHA-256: aad32b364b5418948b34570adf1fd6cfadd874a740eb6d0b53d8aa2a0ab031b5
 ```
 
 也可以前往 [Releases](https://github.com/mx3353672833-debug/WiFiUsage/releases) 获取安装包与源码，或克隆仓库自行构建：
@@ -72,16 +74,19 @@ cd WiFiUsage
 3. 进入“套餐”页面，添加套餐并选择需要绑定的 Wi‑Fi。
 4. 如需减少应用未运行期间的统计缺口，可在设置中开启“登录时启动”。
 
-公共免费版通过 macOS 本机网络信息识别当前 Wi‑Fi，不申请定位权限。使用个人开发签名从源码运行时，可以选择启用 CoreWLAN；此时 macOS 可能把读取 Wi‑Fi 名称归入定位权限。流量账本不会读取、保存或上传地理位置。
+公共免费版通过 macOS 本机网络信息识别当前 Wi‑Fi，不申请定位权限。流量账本不会读取、保存或上传地理位置。
 
 ## 数据与隐私
 
 - 不需要注册账号。
 - 不需要管理员权限。
 - 不安装驱动、Network Extension 或 System Extension。
-- 不包含遥测、广告或云端同步。
+- 不包含自动遥测、广告或云端同步。
 - 流量、套餐和设置均保存在本机。
+- 脱敏诊断日志保存在本机，保留最近 7 天，合计最多占用 5 MiB；不会在后台自动上传。
 - 默认保留最近 400 天的统计记录。
+
+只有在你主动发送应用内反馈时，问题描述、问题类型、软件版本与 build、macOS 版本和处理器架构才会通过加密连接发送。联系方式与脱敏诊断日志是两个独立选项，只有分别明确选择后才会随反馈发送。发送前可以预览日志；日志包含功能状态和错误代码，不包含 Wi-Fi 名称、应用名称、文件路径、流量记录、套餐内容或联系方式。
 
 本地数据库位于：
 
@@ -89,7 +94,13 @@ cd WiFiUsage
 ~/Library/Application Support/WiFiUsage/usage.sqlite
 ```
 
-请不要在公开 Issue 中上传自己的 `usage.sqlite` 数据库。
+本地诊断日志位于：
+
+```text
+~/Library/Application Support/WiFiUsage/Logs/
+```
+
+请不要在公开 Issue 中上传自己的 `usage.sqlite` 数据库或未经检查的诊断日志。
 
 ## 统计口径与已知限制
 
@@ -161,7 +172,7 @@ xcodebuild \
   build
 ```
 
-公共发布 DMG 使用匿名 ad-hoc 签名，未包含开发证书、provisioning profile 或定位 entitlement，也尚未经过 Apple 公证。如从源码构建个人版，请按照 Xcode 提示为本机构建选择自己的开发签名；个人版通过 CoreWLAN 读取 Wi‑Fi 名称时需要对应权限。
+公共发布 DMG 尚未经过 Apple 公证。首次启动请在“应用程序”中右键 `WiFiUsage.app` 并选择“打开”；若仍被阻止，再到“系统设置”→“隐私与安全性”点“仍要打开”。
 
 ## 项目结构
 
@@ -172,7 +183,9 @@ xcodebuild \
 
 ## 反馈问题
 
-欢迎通过 [Issues](https://github.com/mx3353672833-debug/WiFiUsage/issues) 报告问题。请提供：
+可以在应用的“设置”→“诊断与反馈”中直接报告问题。应用内每次反馈都会发送软件版本与 build、macOS 版本和处理器架构；联系方式和脱敏诊断日志均为独立选项，不会默认附带。选择附带日志后，可以在发送前预览具体内容。
+
+也欢迎通过 [Issues](https://github.com/mx3353672833-debug/WiFiUsage/issues) 报告问题。公开提交时请提供：
 
 - macOS 版本
 - Mac 处理器类型

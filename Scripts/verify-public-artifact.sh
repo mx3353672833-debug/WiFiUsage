@@ -8,6 +8,8 @@ fail() { printf 'verification failed: %s\n' "$*" >&2; exit 1; }
 VARIANT=$1
 SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd -P)
 PROJECT_ROOT=$(CDPATH= cd -- "$SCRIPT_DIR/.." && pwd -P)
+EXPECTED_VERSION='1.1.0'
+EXPECTED_BUILD='2'
 case "$VARIANT" in
   PublicTest)
     EXPECTED_BUNDLE_ID='one.xjp.WiFiUsage.PublicTest'
@@ -19,7 +21,7 @@ case "$VARIANT" in
     EXPECTED_BUNDLE_ID='one.xjp.WiFiUsage'
     EXPECTED_APP_NAME='WiFiUsage.app'
     EXPECTED_SUPPORT_DIR='WiFiUsage'
-    DEFAULT_ARTIFACT="$PROJECT_ROOT/dist/WiFiUsage-1.0-public-free.dmg"
+    DEFAULT_ARTIFACT="$PROJECT_ROOT/dist/WiFiUsage-1.1.0-public-free.dmg"
     ;;
   *) usage ;;
 esac
@@ -85,18 +87,22 @@ check_signature() {
 }
 
 check_app() {
-  local app=$1 info bundle_id distribution_variant support_directory allows_location allows_import
+  local app=$1 info bundle_id version build distribution_variant support_directory allows_location allows_import
   [[ -d "$app" ]] || fail "app not found: $app"
   [[ $(basename "$app") == "$EXPECTED_APP_NAME" ]] || fail "unexpected app name: $(basename "$app")"
   info="$app/Contents/Info.plist"
   [[ -f "$info" ]] || fail 'Contents/Info.plist is missing'
 
   bundle_id=$(plutil -extract CFBundleIdentifier raw -o - "$info" 2>/dev/null) || fail 'cannot read CFBundleIdentifier'
+  version=$(plutil -extract CFBundleShortVersionString raw -o - "$info" 2>/dev/null) || fail 'cannot read CFBundleShortVersionString'
+  build=$(plutil -extract CFBundleVersion raw -o - "$info" 2>/dev/null) || fail 'cannot read CFBundleVersion'
   distribution_variant=$(plutil -extract WUDistributionVariant raw -o - "$info" 2>/dev/null) || fail 'cannot read WUDistributionVariant'
   support_directory=$(plutil -extract WUApplicationSupportDirectory raw -o - "$info" 2>/dev/null) || fail 'cannot read WUApplicationSupportDirectory'
   allows_location=$(plutil -extract WUAllowsLocationSSIDAccess raw -o - "$info" 2>/dev/null) || fail 'cannot read WUAllowsLocationSSIDAccess'
   allows_import=$(plutil -extract WUAllowsLegacyDatabaseImport raw -o - "$info" 2>/dev/null) || fail 'cannot read WUAllowsLegacyDatabaseImport'
   [[ "$bundle_id" == "$EXPECTED_BUNDLE_ID" ]] || fail "bundle ID is $bundle_id, expected $EXPECTED_BUNDLE_ID"
+  [[ "$version" == "$EXPECTED_VERSION" ]] || fail "version is $version, expected $EXPECTED_VERSION"
+  [[ "$build" == "$EXPECTED_BUILD" ]] || fail "build is $build, expected $EXPECTED_BUILD"
   [[ "$distribution_variant" == "$VARIANT" ]] || fail "runtime variant is $distribution_variant, expected $VARIANT"
   [[ "$support_directory" == "$EXPECTED_SUPPORT_DIR" ]] || fail 'Application Support directory is incorrect'
   [[ "$allows_location" == false ]] || fail 'location SSID access is enabled'
@@ -124,7 +130,7 @@ check_app() {
 verify_dmg() {
   local dmg=$1 attach_plist="$TMP_DIR/attach.plist" index candidate contents expected staged_app
   [[ -f "$dmg" ]] || fail "DMG not found: $dmg"
-  [[ $(basename "$dmg") == 'WiFiUsage-1.0-public-free.dmg' ]] || fail 'unexpected DMG filename'
+  [[ $(basename "$dmg") == 'WiFiUsage-1.1.0-public-free.dmg' ]] || fail 'unexpected DMG filename'
   hdiutil verify "$dmg" >/dev/null || fail 'DMG integrity verification failed'
   hdiutil attach -readonly -nobrowse -plist "$dmg" >"$attach_plist" || fail 'cannot mount DMG'
   for index in {0..15}; do

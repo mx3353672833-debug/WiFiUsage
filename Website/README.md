@@ -19,7 +19,10 @@ Shared xjp.one navigation files are unavailable in this local server unless copi
 ## Asset sources
 
 - `assets/app-icon.png` ← `../Config/Assets.xcassets/AppIcon.appiconset/AppIcon-512@2x.png`
-- `downloads/WiFiUsage-1.0-free.dmg` ← `dist/WiFiUsage-1.0-public-free.dmg`
+- Release: `1.1.0` (build `2`)
+- `downloads/WiFiUsage-1.1.0-free.dmg` ← `dist/WiFiUsage-1.1.0-public-free.dmg`
+- Final size: `2406265` bytes (`2.4 MB`)
+- Final SHA-256: `aad32b364b5418948b34570adf1fd6cfadd874a740eb6d0b53d8aa2a0ab031b5`
 
 `downloads/` is deployment material. The root `.gitignore` ignores all `*.dmg`, so the binary is not committed.
 
@@ -29,39 +32,34 @@ Run immediately before deployment:
 
 ```sh
 PROJECT_ROOT=$(pwd -P)
-DMG="$PROJECT_ROOT/dist/WiFiUsage-1.0-public-free.dmg"
+DMG="$PROJECT_ROOT/dist/WiFiUsage-1.1.0-public-free.dmg"
 APP="$PROJECT_ROOT/dist/PublicRelease/WiFiUsage.app"
 
 hdiutil verify "$DMG"
 shasum -a 256 "$DMG"
 file "$APP/Contents/MacOS/WiFiUsage"
-codesign --verify --deep --strict --verbose=2 "$APP"
-codesign -dv --verbose=4 "$APP"
 bash Scripts/verify-public-artifact.sh PublicRelease "$DMG"
 bash Scripts/scan-website-release.sh Website "$DMG"
 ```
 
-Update `index.html`, `brand-spec.md`, root `README.md`, and release notes if any version, size, architecture, signature, notarization, or checksum value changes.
+Before deployment, replace all three release-metadata placeholders with values from the final DMG. Update `index.html`, `brand-spec.md`, root `README.md`, and release notes if any version, build, size, architecture, installation guidance, checksum, diagnostic behavior, or feedback privacy boundary changes.
 
-## Deployment mapping
+## Deployment allowlist
 
-```text
-Website/ → xjp-one/public/wifiusage/
-```
+Publish only these entries from `Website/` to the public `/wifiusage/` route:
 
-Deploy to a timestamped sibling directory first, verify files and DMG checksum, then rename atomically. Exclude `.DS_Store` and `._*` files.
+- `index.html`
+- `script.js`
+- `styles.css`
+- `assets/`
+- `downloads/`
 
-The feedback form posts to the same-origin `POST /api/wifiusage/feedback` endpoint. Its reusable route module is stored at `Deploy/xjp-one/wifiusage-feedback.js`; the live server keeps the private recipient in `WIFIUSAGE_FEEDBACK_TO` and passes its existing mail transporter into `registerWiFiUsageFeedback`. Never put the recipient address or SMTP credentials in `Website/`.
+Explicitly exclude all `*.md` files, including this README and `brand-spec.md`. Do not publish any other repository file, hidden file, build output, configuration, or source code. Verify the allowlisted copy and final DMG checksum before switching the public release.
 
-Use the live `xjp-one/public/site-nav.js` as merge base. Add the WiFiUsage link without overwriting newer navigation entries.
+The website form and macOS app send feedback through the product's public HTTPS feedback endpoint. Feedback-service components and configuration are not part of this static-site deployment.
 
-Static-only changes do not require DNS changes, Nginx changes, Nginx reload, or an Express restart. Restart the existing Express service only when the feedback route module or its private environment configuration changes.
+The macOS app keeps desensitized diagnostic logs locally for up to 7 days and 5 MiB, with no automatic upload. Every in-app feedback submission sends the problem description, software version and build, macOS version, and architecture. Contact details and the desensitized diagnostic attachment are separate explicit choices; the attachment is previewable before sending. Traffic, plan, and settings data remain local.
 
 ## Rollback
 
-Keep timestamped backups of:
-
-- the live `xjp-one/public/site-nav.js`
-- the live `xjp-one/public/wifiusage/` directory when it already exists
-
-Restore the previous directory and navigation file by atomic rename. If no previous website existed, remove the failed directory to restore the prior 404 state.
+Keep a recoverable copy of the previously published allowlisted files. If verification fails, restore that known-good static bundle and recheck the public page and download before continuing.

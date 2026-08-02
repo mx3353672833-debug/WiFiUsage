@@ -5,10 +5,22 @@ public enum PhysicalWiFiSamplerError: Error, Equatable, Sendable {
     case invalidSamplingInterval
 }
 
+public struct PhysicalSamplerDiagnosticFailure: Equatable, Sendable {
+    public enum Domain: String, Sendable {
+        case interfaceCounters = "interface_counters"
+        case sqlite
+        case unknown
+    }
+
+    public let domain: Domain
+    public let numericCode: Int64?
+}
+
 /// Diffs cumulative physical Wi-Fi counters. The first observation, interface changes,
 /// and counter decreases establish a new baseline and deliberately emit no traffic.
 public actor PhysicalWiFiSampler {
     public typealias SampleHandler = @Sendable (PhysicalUsageSample) async throws -> Void
+    public typealias FailureHandler = @Sendable (PhysicalSamplerDiagnosticFailure) async -> Void
 
     private struct Baseline: Sendable {
         let network: WiFiNetworkIdentity
@@ -21,6 +33,7 @@ public actor PhysicalWiFiSampler {
     private let networkResolver: any WiFiNetworkResolving
     private let samplingInterval: Duration
     private let sampleHandler: SampleHandler
+    private let failureHandler: FailureHandler
     private var baseline: Baseline?
     private var samplingTask: Task<Void, Never>?
     private var isStopping = false
@@ -29,6 +42,7 @@ public actor PhysicalWiFiSampler {
         counterProvider: any InterfaceCounterProviding = SystemInterfaceCounterProvider(),
         networkResolver: any WiFiNetworkResolving,
         samplingInterval: Duration = .seconds(1),
+        failureHandler: @escaping FailureHandler = { _ in },
         sampleHandler: @escaping SampleHandler
     ) throws {
         guard samplingInterval > .zero else {
@@ -37,6 +51,7 @@ public actor PhysicalWiFiSampler {
         self.counterProvider = counterProvider
         self.networkResolver = networkResolver
         self.samplingInterval = samplingInterval
+        self.failureHandler = failureHandler
         self.sampleHandler = sampleHandler
     }
 
@@ -49,6 +64,8 @@ public actor PhysicalWiFiSampler {
                     try await self.sampleOnce()
                 } catch {
                     // A transient CoreWLAN/sysctl/storage error must not terminate sampling.
+                    let failure = Self.diagnosticFailure(for: error)
+                    await self.failureHandler(failure)
                 }
                 do {
                     try await Task.sleep(for: self.samplingInterval)
@@ -137,5 +154,29 @@ public actor PhysicalWiFiSampler {
             "gif", "stf", "ipsec", "ppp", "lo", "anpi", "ap"
         ]
         return virtualPrefixes.contains { lowercased.hasPrefix($0) }
+    }
+
+    static func diagnosticFailure(for error: Error) -> PhysicalSamplerDiagnosticFailure {
+        if let counterError = error as? SystemInterfaceCounterError {
+            switch counterError {
+            case .systemCall(let code):
+                return PhysicalSamplerDiagnosticFailure(
+                    domain: .interfaceCounters,
+                    numericCode: Int64(code)
+                )
+            case .unstableSnapshot:
+                return PhysicalSamplerDiagnosticFailure(
+                    domain: .interfaceCounters,
+                    numericCode: nil
+                )
+            }
+        }
+        if let sqliteError = error as? SQLiteUsageRepositoryError {
+            return PhysicalSamplerDiagnosticFailure(
+                domain: .sqlite,
+                numericCode: Int64(sqliteError.code)
+            )
+        }
+        return PhysicalSamplerDiagnosticFailure(domain: .unknown, numericCode: nil)
     }
 }

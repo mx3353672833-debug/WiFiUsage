@@ -9,8 +9,11 @@
 /* Begin PBXBuildFile section */
 		0887D644FE7C605D85BFB927 /* InterfaceCounters.c in Sources */ = {isa = PBXBuildFile; fileRef = 208308019ECFBA168606EB93 /* InterfaceCounters.c */; };
 		097C75A709A947BA0FFB670A /* LaunchAtLoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87432083DC01C442CD6DE19B /* LaunchAtLoginManager.swift */; };
+		0DF83B5AE3EEDBA231F07D5B /* FeedbackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30CFC3BF36B8EF0DA1121A8F /* FeedbackView.swift */; };
 		108574A3B60F37EEED17E26E /* UsageRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64253045AE0C25F4AE9DB5FC /* UsageRepository.swift */; };
 		1466BF1B9C47C142F0CD1B9E /* SystemInterfaceCounterProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1FAA2A8B610A21D93DFC830 /* SystemInterfaceCounterProvider.swift */; };
+		197281F9DF57D816702E2A22 /* AppFeedbackClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E08931D434F91621E20F274E /* AppFeedbackClientTests.swift */; };
+		1BBE8C70F535F7D24A38940E /* AppFeedbackClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A7183CF2DF04C07C093F5C /* AppFeedbackClient.swift */; };
 		1DC5D84E935BF94EF03BEC59 /* UsageBillingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 290AADA62B42D5762FE76A74 /* UsageBillingTests.swift */; };
 		28D21D33317D8E924EC5E206 /* AppRuntimeConfigurationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B0E909080CE1C70E3BF699C /* AppRuntimeConfigurationTests.swift */; };
 		2B7A71AE34743CF3E4B497D8 /* SystemBridge.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4E5C6E5BA8ECDB7EA5000BB3 /* SystemBridge.h */; };
@@ -30,7 +33,9 @@
 		769AB0E604F4A09E0C503835 /* module.modulemap in CopyFiles */ = {isa = PBXBuildFile; fileRef = 13DC4489329111A61045EFE8 /* module.modulemap */; };
 		7F01AD87D59F66C09723F695 /* IPConfigSSIDProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A445193396274E8D111E55 /* IPConfigSSIDProvider.swift */; };
 		8CCB2BAF3636C1D0070F4D03 /* SQLiteUsageRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6382AE9665EDB08837F590BD /* SQLiteUsageRepository.swift */; };
+		8F065DF08E6129DF07051DC4 /* SamplingDiagnosticTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23850A734F3AD054E51AB316 /* SamplingDiagnosticTests.swift */; };
 		90C0E1149B69757EB1C33D87 /* UsageBilling.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDD1DC280E1748F1F3D1AC5A /* UsageBilling.swift */; };
+		90E3F4344E533B3557C521D7 /* DiagnosticLogStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F6B9718C901B83559B68BE /* DiagnosticLogStoreTests.swift */; };
 		92596F38F1BCA465BF5A3AF8 /* PlansView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 242A8AB8884AE54D92D101E9 /* PlansView.swift */; };
 		98D81D63B27DC35AC504F5C6 /* IPConfigSummaryParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499824C91AEB2FC238BE4B85 /* IPConfigSummaryParserTests.swift */; };
 		9C006255DC141E3A9F221D16 /* ApplicationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3C128F7F90AA175B78A985 /* ApplicationsView.swift */; };
@@ -47,6 +52,7 @@
 		DEFF5BE8983A2F2DB6DAA3CF /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773ECADD20998C1985FDE8E1 /* SettingsView.swift */; };
 		E79B271703A07E01E021BA32 /* WiFiNetworksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3013553743ED6312759D8B77 /* WiFiNetworksView.swift */; };
 		EBA15BBFEBA151B412658B87 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6394DADCF59A640A8A410A00 /* AppModel.swift */; };
+		F147A60A8CF719BAFFD14446 /* DiagnosticLogStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5D2DACF5F2B3404BF163BFD /* DiagnosticLogStore.swift */; };
 		F30D32DFE94FFF25C99B4370 /* WiFiNetworkName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 292D84822E3D7F7A679AB090 /* WiFiNetworkName.swift */; };
 		F5A2DBD737430D632ECA32D6 /* PhysicalWiFiSampler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB9367576A4FC44031F1DF1 /* PhysicalWiFiSampler.swift */; };
 		F5C9CDE1E7737D16028D56F8 /* UsagePeriod.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1514254A68B763D816EF5DC /* UsagePeriod.swift */; };
@@ -104,6 +110,8 @@
 		1AEC9E49F113D436F78510CA /* ProcessNetworkSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessNetworkSnapshotTests.swift; sourceTree = "<group>"; };
 		1DC48CB402A557056CD0E37A /* LaunchAtLoginManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchAtLoginManagerTests.swift; sourceTree = "<group>"; };
 		208308019ECFBA168606EB93 /* InterfaceCounters.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = InterfaceCounters.c; sourceTree = "<group>"; };
+		20A7183CF2DF04C07C093F5C /* AppFeedbackClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFeedbackClient.swift; sourceTree = "<group>"; };
+		23850A734F3AD054E51AB316 /* SamplingDiagnosticTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SamplingDiagnosticTests.swift; sourceTree = "<group>"; };
 		242A8AB8884AE54D92D101E9 /* PlansView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlansView.swift; sourceTree = "<group>"; };
 		24675F9AF3F5E66BFDF64451 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
 		28772D1687233AD54B7A1C3B /* AppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -113,6 +121,8 @@
 		2AB9367576A4FC44031F1DF1 /* PhysicalWiFiSampler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicalWiFiSampler.swift; sourceTree = "<group>"; };
 		2E7E0B0364F4C71A2A153F9C /* libUsageCore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libUsageCore.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		3013553743ED6312759D8B77 /* WiFiNetworksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WiFiNetworksView.swift; sourceTree = "<group>"; };
+		30CFC3BF36B8EF0DA1121A8F /* FeedbackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackView.swift; sourceTree = "<group>"; };
+		35F6B9718C901B83559B68BE /* DiagnosticLogStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiagnosticLogStoreTests.swift; sourceTree = "<group>"; };
 		37693859721FB140399EAD60 /* WiFiNetworkResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WiFiNetworkResolver.swift; sourceTree = "<group>"; };
 		43CB7D1762796A7E342DCB6E /* UsageDesign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageDesign.swift; sourceTree = "<group>"; };
 		499824C91AEB2FC238BE4B85 /* IPConfigSummaryParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IPConfigSummaryParserTests.swift; sourceTree = "<group>"; };
@@ -141,10 +151,12 @@
 		CDEDD86F14BE3BEB4E0806F1 /* UsageComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageComponents.swift; sourceTree = "<group>"; };
 		CDF7C97610E7F81AEA68848B /* UsageFormatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageFormatting.swift; sourceTree = "<group>"; };
 		D8C8E8E2716A6BB6CCDA3641 /* WiFiNetworkNameTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WiFiNetworkNameTests.swift; sourceTree = "<group>"; };
+		E08931D434F91621E20F274E /* AppFeedbackClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFeedbackClientTests.swift; sourceTree = "<group>"; };
 		E3AD987B2104F743D97CF19C /* WiFiUsage-Public-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "WiFiUsage-Public-Info.plist"; sourceTree = "<group>"; };
 		E4113FFBD99E0E8EAA88F97A /* WiFiUsage-Personal-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "WiFiUsage-Personal-Info.plist"; sourceTree = "<group>"; };
 		E4BBF682D33D85977C96E6CB /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		E942DC35DC785971DD55938B /* WiFiUsage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WiFiUsage.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F5D2DACF5F2B3404BF163BFD /* DiagnosticLogStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiagnosticLogStore.swift; sourceTree = "<group>"; };
 		F7A54CCA9C9A3462F4BBB650 /* UsageCoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UsageCoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F7F73ECD874F892836CBEB5B /* UsageModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageModels.swift; sourceTree = "<group>"; };
 		FA46148AA480455FD43D5D2E /* ApplicationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationDelegate.swift; sourceTree = "<group>"; };
@@ -181,6 +193,14 @@
 			path = Tests;
 			sourceTree = "<group>";
 		};
+		1BF6F74D3422D963B179B2BF /* Diagnostics */ = {
+			isa = PBXGroup;
+			children = (
+				F5D2DACF5F2B3404BF163BFD /* DiagnosticLogStore.swift */,
+			);
+			path = Diagnostics;
+			sourceTree = "<group>";
+		};
 		209E85F793212693126BE498 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -196,6 +216,8 @@
 				AA2780A562AC3E3297D41753 /* Application */,
 				E794E858F8214E4D5DB7CD4D /* Applications */,
 				9702D373EBC6033E9C8DD812 /* Dashboard */,
+				1BF6F74D3422D963B179B2BF /* Diagnostics */,
+				DBA64DF0445E68E5CB4DCA76 /* Feedback */,
 				9F7AB143890DD7D32CF0A742 /* FilterManagement */,
 				ECC5FD7BD86858891BF0DBD0 /* MenuBar */,
 				3D91BCEE2498B797BD7DCFA2 /* Plans */,
@@ -220,10 +242,13 @@
 		2EDF80A6EC19A059398FCD89 /* AppTests */ = {
 			isa = PBXGroup;
 			children = (
+				E08931D434F91621E20F274E /* AppFeedbackClientTests.swift */,
 				7B0E909080CE1C70E3BF699C /* AppRuntimeConfigurationTests.swift */,
+				35F6B9718C901B83559B68BE /* DiagnosticLogStoreTests.swift */,
 				499824C91AEB2FC238BE4B85 /* IPConfigSummaryParserTests.swift */,
 				1DC48CB402A557056CD0E37A /* LaunchAtLoginManagerTests.swift */,
 				A01ABF294401210A71B68DDB /* PhysicalWiFiSamplerTests.swift */,
+				23850A734F3AD054E51AB316 /* SamplingDiagnosticTests.swift */,
 			);
 			path = AppTests;
 			sourceTree = "<group>";
@@ -399,6 +424,15 @@
 				B1514254A68B763D816EF5DC /* UsagePeriod.swift */,
 			);
 			path = DateRanges;
+			sourceTree = "<group>";
+		};
+		DBA64DF0445E68E5CB4DCA76 /* Feedback */ = {
+			isa = PBXGroup;
+			children = (
+				20A7183CF2DF04C07C093F5C /* AppFeedbackClient.swift */,
+				30CFC3BF36B8EF0DA1121A8F /* FeedbackView.swift */,
+			);
+			path = Feedback;
 			sourceTree = "<group>";
 		};
 		E14B5BE30AB4389B3512BDEF = {
@@ -622,10 +656,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				197281F9DF57D816702E2A22 /* AppFeedbackClientTests.swift in Sources */,
 				28D21D33317D8E924EC5E206 /* AppRuntimeConfigurationTests.swift in Sources */,
+				90E3F4344E533B3557C521D7 /* DiagnosticLogStoreTests.swift in Sources */,
 				98D81D63B27DC35AC504F5C6 /* IPConfigSummaryParserTests.swift in Sources */,
 				DEA9D5ED3AFA938DEA3C610A /* LaunchAtLoginManagerTests.swift in Sources */,
 				40DEC678C3B95A97CF671CDB /* PhysicalWiFiSamplerTests.swift in Sources */,
+				8F065DF08E6129DF07051DC4 /* SamplingDiagnosticTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -656,11 +693,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1BBE8C70F535F7D24A38940E /* AppFeedbackClient.swift in Sources */,
 				EBA15BBFEBA151B412658B87 /* AppModel.swift in Sources */,
 				2F475F8C4F270C938EE1E582 /* AppRuntimeConfiguration.swift in Sources */,
 				4AFBCDD7DC84DC1D64E9721A /* ApplicationDelegate.swift in Sources */,
 				9C006255DC141E3A9F221D16 /* ApplicationsView.swift in Sources */,
 				A8227990FFA373EAC13CBAC9 /* DashboardView.swift in Sources */,
+				F147A60A8CF719BAFFD14446 /* DiagnosticLogStore.swift in Sources */,
+				0DF83B5AE3EEDBA231F07D5B /* FeedbackView.swift in Sources */,
 				7F01AD87D59F66C09723F695 /* IPConfigSSIDProvider.swift in Sources */,
 				097C75A709A947BA0FFB670A /* LaunchAtLoginManager.swift in Sources */,
 				B57D07D260C4D4C065FCA5A1 /* MenuBarUsageView.swift in Sources */,

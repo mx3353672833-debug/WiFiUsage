@@ -2,6 +2,7 @@ import SwiftUI
 
 struct SettingsView: View {
     @Environment(AppModel.self) private var model
+    @State private var isFeedbackPresented = false
 
     var body: some View {
         ScrollView {
@@ -180,16 +181,28 @@ struct SettingsView: View {
                     }
                 }
 
+                DiagnosticFeedbackCard(isFeedbackPresented: $isFeedbackPresented)
+
                 if let error = model.errorMessage {
-                    Label(error, systemImage: "exclamationmark.triangle")
-                        .foregroundStyle(.orange)
-                        .font(.caption)
+                    HStack {
+                        Label(error, systemImage: "exclamationmark.triangle")
+                            .foregroundStyle(.orange)
+                            .font(.caption)
+                        Spacer()
+                        Button("反馈这个问题") { isFeedbackPresented = true }
+                            .font(.caption)
+                    }
                 }
             }
             .padding(24)
         }
         .background(Color.usageBackground)
         .task { model.refreshLaunchAtLogin() }
+        .sheet(isPresented: $isFeedbackPresented) {
+            FeedbackSheet()
+                .environment(model)
+                .preferredColorScheme(.dark)
+        }
     }
 
     private var samplingStatusSymbol: String {

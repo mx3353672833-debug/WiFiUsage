@@ -18,7 +18,7 @@ done
 
 SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd -P)
 PROJECT_ROOT=$(CDPATH= cd -- "$SCRIPT_DIR/.." && pwd -P)
-CANONICAL_DMG="$PROJECT_ROOT/dist/WiFiUsage-1.0-public-free.dmg"
+CANONICAL_DMG="$PROJECT_ROOT/dist/WiFiUsage-1.1.0-public-free.dmg"
 if [[ $# -eq 0 ]]; then
   TARGETS=("$PROJECT_ROOT/Website")
   [[ -f "$CANONICAL_DMG" ]] && TARGETS+=("$CANONICAL_DMG")
